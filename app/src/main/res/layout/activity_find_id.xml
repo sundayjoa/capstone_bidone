@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Find_Id"
+    android:orientation="vertical">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/yellow"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:text="아이디 찾기"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:textStyle="bold">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="395dp"
+        android:layout_margin="50dp"
+        android:orientation="vertical">
+
+        <EditText
+            style="@style/AuthEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="이름을 입력해 주세요" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#999999" />
+
+        <EditText
+            style="@style/AuthEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="생년월일 : 000000 " />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#999999" />
+
+        <EditText
+            style="@style/AuthEditText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="전화번호를 입력해주세요" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="#999999" />
+
+        <Button
+            android:layout_width="match_parent"
+
+            android:layout_height="50dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/background_radious"
+            android:text="인증 확인" />
+
+
+        <Button
+            android:layout_width="match_parent"
+
+            android:layout_height="50dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/background_radious"
+            android:text="ID 찾기" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
