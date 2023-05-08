@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 하단바 아이콘 설정 -->
+    <item
+        android:id="@+id/HomeFragment"
+        android:title="home"
+        android:icon="@drawable/ic_home" />
+
+    <item
+        android:id="@+id/BoardFragment"
+        android:title="게시판"
+        android:icon="@drawable/ic_board" />
+
+    <item
+        android:id="@+id/AlarmFragment"
+        android:title="알림"
+        android:icon="@drawable/ic_alarm" />
+
+    <item
+        android:id="@+id/MyFragment"
+        android:title="my 페이지"
+        android:icon="@drawable/ic_my" />
+
+</menu>

@@ -11,9 +11,13 @@ android {
     compileSdkPreview "UpsideDownCake"
     
     //바인딩 true 선언
-
     buildFeatures {
         viewBinding true
+    }
+    
+    //하단바 설정 위해 viewBinding true 설정
+    viewBinding{
+        enable true
     }
 
     defaultConfig {
