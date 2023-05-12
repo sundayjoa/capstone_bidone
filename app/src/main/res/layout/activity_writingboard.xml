@@ -24,9 +24,9 @@
         android:id="@+id/textView3"
         android:layout_width="319dp"
         android:layout_height="31dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="67dp"
+        android:layout_marginBottom="59dp"
         android:background="@drawable/background_borderline"
         android:hint="제목을 입력하세요."
         android:textColor="#000000"
@@ -52,29 +52,30 @@
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="150dp"
-        android:layout_height="220dp"
+        android:layout_height="200dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="128dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="114dp"
         android:contentDescription="썸네일 추가"
-        app:layout_constraintBottom_toTopOf="@+id/spinner2"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toStartOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/ic_input_add" />
 
     <TextView
         android:id="@+id/textView5"
-        android:layout_width="209dp"
-        android:layout_height="220dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="5dp"
         android:layout_marginEnd="26dp"
+        android:layout_marginBottom="48dp"
         android:gravity="center"
         android:hint="작품 설명(50자)"
         android:textColor="#000000"
         android:textColorHint="#969696"
         android:textSize="20sp"
-        android:layout_marginStart="5dp"
-        android:layout_marginBottom="13dp"
         app:layout_constraintBottom_toTopOf="@+id/spinner2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButton"
@@ -96,6 +97,7 @@
 
     <Spinner
         android:id="@+id/spinner2"
+        style="@android:style/Widget.Material.Spinner.Underlined"
         android:layout_width="161dp"
         android:layout_height="48dp"
         android:layout_marginEnd="150dp"
@@ -106,4 +108,61 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/categoryView"
         app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="288dp"
+        android:text="상세설명"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/cancelbutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="370dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="70dp"
+        android:hint="상세 설명을 입력해주세요."
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textColorHint="#969696"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/cancelbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <Button
+        android:id="@+id/cancelbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginBottom="11dp"
+        android:text="취소"
+        android:textSize="20sp"
+        android:backgroundTint="@color/red"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="11dp"
+        android:text="작성"
+        android:textSize="20sp"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

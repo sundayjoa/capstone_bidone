@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Spinner
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,6 +58,17 @@ class BoardFragment : Fragment() {
         return view
     }
 
+    //WritingboardActivity 화면 전환 리스너
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val writingButton: ImageButton = view.findViewById(R.id.writingButton)
+        writingButton.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, WritingboardActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+    }
 
     companion object {
         /**
