@@ -20,6 +20,10 @@ android {
         enable true
     }
 
+    // 데이터 바인딩 선언 이동시 사용
+    dataBinding{
+        enabled true
+    }
     defaultConfig {
         applicationId "com.example.bidone"
         minSdk 24

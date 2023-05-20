@@ -1,10 +1,12 @@
 package com.example.bidone
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,12 +23,9 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -35,6 +34,40 @@ class HomeFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 홈 fragment -> 현재 관심도가 높은 작품 버튼 이벤트
+        val favButton: ImageButton = view.findViewById(R.id.favButton)
+        favButton.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it,FavoriteActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+
+        // 홈 fragment -> 실시간 경매 작품 버튼 이벤트
+        val rtimeButton: ImageButton = view.findViewById(R.id.rtimeButton)
+        rtimeButton.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it,RealtimeActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
+
+        // 홈 fragment -> 의뢰게시판 버튼 이벤트
+        val requestboardButton: ImageButton = view.findViewById(R.id.requestboardButton)
+        requestboardButton.setOnClickListener {
+            activity?.let {
+                val intent = Intent(it, RequestboardActivity::class.java)
+                it.startActivity(intent)
+            }
+        }
     }
 
     companion object {
