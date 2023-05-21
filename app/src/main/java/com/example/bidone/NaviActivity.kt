@@ -17,6 +17,12 @@ class NaviActivity : AppCompatActivity() {
         binding = ActivityNaviBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //첫 시작화면
+        supportFragmentManager.beginTransaction()
+
+            .add(R.id.frame_layout,HomeFragment())
+            .commit()
+
         //네비게이션 관련 명령어
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId){

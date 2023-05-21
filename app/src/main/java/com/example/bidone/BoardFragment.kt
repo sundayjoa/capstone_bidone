@@ -6,10 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.Spinner
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -53,6 +50,21 @@ class BoardFragment : Fragment() {
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, items)
         // 스피너에 어댑터 설정
         spinner.adapter = adapter
+
+        //스피너에서 외뢰 게시판을 클릭했을 때 해당 게시판으로 이동
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                if (selectedItem == "의뢰게시판") {
+                    val intent = Intent(activity, RequestboardActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // 아무 항목도 선택되지 않았을 때 실행될 코드
+            }
+        }
 
 
         return view
