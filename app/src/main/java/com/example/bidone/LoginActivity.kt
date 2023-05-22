@@ -35,7 +35,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //메인화면 창 전환(임시:현재 게시판 화면과 연결. 메인화면으로 수정해야 함.)
+        //메인화면 창 전환
         val loginbutton=findViewById<Button>(R.id.loginbutton)
 
         loginbutton.setOnClickListener(){

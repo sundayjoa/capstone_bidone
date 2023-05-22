@@ -5,15 +5,198 @@
     android:id="@+id/constraint_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
     tools:context=".AlarmFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="my Fragment"
-        android:textSize="20dp"
-        android:layout_gravity="center"/>
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="19dp"
+        android:layout_marginBottom="15dp"
+        android:text="My 페이지"
+        android:textColor="#000000"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView14"
+        app:layout_constraintEnd_toStartOf="@+id/textView14"
+        app:layout_constraintStart_toStartOf="@+id/textView14"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="7dp"
+        android:text="이름"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toStartOf="@+id/textView14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="240dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="31dp"
+        android:layout_marginStart="2dp"
+        android:background="@drawable/background_borderline"
+        android:gravity="center"
+        android:hint="현재 이름"
+        android:textColorHint="#969696"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView15"
+        app:layout_constraintEnd_toStartOf="@+id/namechangebutton"
+        app:layout_constraintStart_toEndOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+    <Button
+        android:id="@+id/namechangebutton"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="60dp"
+        android:backgroundTint="@color/blue"
+        android:text="변경"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/findaddressbutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView14"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="70dp"
+        android:text="기본 주소"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="182dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/background_borderline"
+        android:gravity="center"
+        android:hint="기본 설정 주소"
+        android:textColorHint="#969696"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/addresschangebutton"
+        app:layout_constraintEnd_toStartOf="@+id/findaddressbutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/findaddressbutton"
+        android:layout_width="70dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="9dp"
+        android:backgroundTint="#88C6C0"
+        android:text="찾기"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/addresschangebutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/namechangebutton" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="0dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/background_borderline"
+        android:hint="상세주소"
+        android:textColorHint="#969696"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView18"
+        app:layout_constraintEnd_toStartOf="@+id/addresschangebutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <Button
+        android:id="@+id/addresschangebutton"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="437dp"
+        android:backgroundTint="@color/blue"
+        android:text="변경"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="152dp"
+        android:layout_marginBottom="150dp"
+        android:text="즐겨찾기 해놓은 작품"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView19"
+        app:layout_constraintEnd_toStartOf="@+id/morebutton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="250dp"
+        android:layout_marginBottom="200dp"
+        android:text="내 게시글"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/morebutton2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <ImageView
+        android:id="@+id/morebutton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="125dp"
+        android:src="@drawable/ic_more"
+        app:layout_constraintBottom_toTopOf="@+id/morebutton2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/addresschangebutton" />
+
+    <ImageView
+        android:id="@+id/morebutton2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="175dp"
+        android:src="@drawable/ic_more"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/morebutton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
