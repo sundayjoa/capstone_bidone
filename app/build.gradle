@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    // drawer layout 을 위한 plugin  kotlin- extensions는 서비스 종료.. 삭제시 오류
+    id 'kotlin-parcelize'
 }
 
 android {
