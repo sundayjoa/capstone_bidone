@@ -3,13 +3,28 @@
     <group android:checkableBehavior="single">
 
         <!-- 채팅 사용자 아이콘 설정 -->
-        <item android:id="@+id/person_requester"
-            android:icon="@drawable/ic_chat_person_requester"
-            android:title="의뢰자"/>
+        <item android:title="대화상대">
+            <menu>
+                <item android:id="@+id/person_requester"
+                    android:icon="@drawable/ic_chat_person_requester"
+                    android:title="의뢰자"/>
 
-        <item android:id="@+id/person_seller"
-            android:icon="@drawable/ic_chat_person_seller"
-            android:title="판매자"/>
+                <item android:id="@+id/person_seller"
+                    android:icon="@drawable/ic_chat_person_seller"
+                    android:title="판매자"/>
+            </menu>
+        </item>
+
+            <item android:id="@+id/chat_exit"
+                android:icon="@drawable/ic_chat_exit"
+                android:title="나가기"/>
+
+
+
+
+
+
+
 
 
 

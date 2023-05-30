@@ -1,5 +1,6 @@
 package com.example.bidone
 
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -33,18 +34,22 @@ class RequestchatActivity : AppCompatActivity() ,NavigationView.OnNavigationItem
             layout_drawer.openDrawer(GravityCompat.END)   // START = left / END = right
 
         }
-
         val naviView_chat_set = findViewById<NavigationView>(R.id.naviView_chat_set)
         naviView_chat_set.setNavigationItemSelectedListener(this)// 네비게이션 아이템에 클릭 속성 부여
+
+
+
     }
+
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // 네비게이션 아이템 클릭 시 수행
         when (item.itemId) {
             R.id.person_requester -> Toast.makeText(applicationContext, "의뢰자", Toast.LENGTH_SHORT).show()
             R.id.person_seller -> Toast.makeText(applicationContext, "판매자", Toast.LENGTH_SHORT).show()
-
+            //R.id.chat_exit -> Dialog
         }
+
         val layout_drawer = findViewById<DrawerLayout>(R.id.layout_drawer)
         layout_drawer.closeDrawers() // 네비게이션 뷰 닫기
         return false
