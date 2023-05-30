@@ -12,6 +12,9 @@
         android:theme="@style/Theme.Bidone"
         tools:targetApi="31">
         <activity
+            android:name=".WritingdialogActivity"
+            android:exported="false" />
+        <activity
             android:name=".RequestchatActivity"
             android:exported="false" />
         <activity
@@ -20,7 +23,6 @@
         <activity
             android:name=".RequestboardActivity"
             android:exported="false" />
-
         <activity
             android:name=".RealtimeActivity"
             android:exported="false" />
