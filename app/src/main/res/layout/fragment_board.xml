@@ -1,65 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".BoardFragment">
+    tools:context=".BoardFragment"
+    tools:ignore="TouchTargetSize">
 
-    <TextView
-        android:id="@+id/searchText"
-        android:layout_width="270dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="135dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="28dp"
-        android:background="@drawable/background_borderline"
-        android:hint="검색어를 입력하세요."
-        android:singleLine="false"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/spinner"
-        app:layout_constraintEnd_toStartOf="@+id/searchButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/searchButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="키워드 찾기"
-        app:layout_constraintBottom_toBottomOf="@+id/writingButton"
-        app:layout_constraintEnd_toStartOf="@+id/writingButton"
-        app:layout_constraintStart_toEndOf="@+id/searchText"
-        app:layout_constraintTop_toTopOf="@+id/writingButton"
-        app:srcCompat="@android:drawable/ic_menu_search" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/writingButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="게시글 작성"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/searchButton"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/spinner"
-        style="@android:style/Widget.Material.Spinner.Underlined"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="703dp"
-        android:backgroundTint="#00BCD4"
-        android:contentDescription="카테고리 설정"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchText" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <EditText
+                    android:id="@+id/searchText"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_borderline"
+                    android:hint="검색어를 입력하세요."
+                    android:singleLine="false"
+                    android:textColor="#000000"
+                    android:textColorHint="#969696"
+                    android:textSize="20sp"
+                    />
+
+                <ImageButton
+                    android:id="@+id/searchButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="키워드 찾기"
+                    app:srcCompat="@android:drawable/ic_menu_search" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner"
+                style="@android:style/Widget.Material.Spinner.Underlined"
+                android:layout_width="150dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="20dp"
+                android:backgroundTint="#00BCD4"
+                android:contentDescription="카테고리 설정" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- 이곳에 리사이클러뷰 추가 -->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/imagerecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="80dp"
+                android:background="@drawable/background_borderline"/>
+
+            <Button
+                android:id="@+id/writingButton"
+                android:layout_width="130dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="bottom|center"
+                android:background="@drawable/background_radious"
+                android:text="글쓰기" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</layout>

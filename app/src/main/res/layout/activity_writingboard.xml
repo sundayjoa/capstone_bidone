@@ -1,180 +1,282 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".WritingboardActivity">
 
-    <TextView
-        android:id="@+id/titleView"
-        android:layout_width="73dp"
-        android:layout_height="31dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginBottom="18dp"
-        android:text="제목:"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/pictureView4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="스크롤뷰">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="319dp"
-        android:layout_height="31dp"
-        android:layout_marginTop="31dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="59dp"
-        android:background="@drawable/background_borderline"
-        android:hint="제목을 입력하세요."
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/pictureView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="19dp"
-        android:text="제품사진(썸네일)"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleView" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="150dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="114dp"
-        android:contentDescription="썸네일 추가"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toStartOf="@+id/textView5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_input_add" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginBottom="48dp"
-        android:gravity="center"
-        android:hint="작품 설명(50자)"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/spinner2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                    <TextView
+                        android:id="@+id/titleView"
+                        android:layout_width="60dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="16dp"
+                        android:text="제목:"
+                        android:textColor="#000000"
+                        android:textSize="25sp"
+                        />
 
-    <TextView
-        android:id="@+id/categoryView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="339dp"
-        android:text="카테고리:"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/spinner2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+                    <EditText
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@drawable/background_borderline"
+                        android:hint="제목을 입력하세요."
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        android:textSize="20sp"
+                        />
 
-    <Spinner
-        android:id="@+id/spinner2"
-        style="@android:style/Widget.Material.Spinner.Underlined"
-        android:layout_width="161dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="150dp"
-        android:layout_marginBottom="334dp"
-        android:backgroundTint="#00BCD4"
-        android:contentDescription="카테고리 선택"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/categoryView"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+                </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="288dp"
-        android:text="상세설명"
-        android:textColor="#000000"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cancelbutton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+            </FrameLayout>
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="370dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="70dp"
-        android:gravity="center"
-        android:hint="상세 설명을 입력해주세요."
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/cancelbutton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/cancelbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginBottom="11dp"
-        android:backgroundTint="@color/red"
-        android:text="취소"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                <TextView
+                    android:id="@+id/pictureView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="19dp"
+                    android:text="제품사진(썸네일)"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    />
 
-    <Button
-        android:id="@+id/completebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="11dp"
-        android:backgroundTint="@color/teal_700"
-        android:text="작성"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="6dp"
-        android:contentDescription="이미지 추가"
-        app:layout_constraintBottom_toTopOf="@+id/textView4"
-        app:layout_constraintEnd_toEndOf="@+id/textView4"
-        app:srcCompat="@android:drawable/ic_input_add" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imageButton"
+                        android:layout_width="150dp"
+                        android:layout_height="200dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:contentDescription="썸네일 추가"
+                        app:srcCompat="@android:drawable/ic_input_add" />
+
+                    <EditText
+                        android:id="@+id/simple_explanation"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="20dp"
+                        android:gravity="center"
+                        android:hint="작품 설명(50자)"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        android:textSize="20sp"
+                        android:background="@drawable/background_borderline"
+                        />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/categoryView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="카테고리:"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        />
+
+                    <Spinner
+                        android:id="@+id/spinner2"
+                        style="@android:style/Widget.Material.Spinner.Underlined"
+                        android:layout_width="130dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="5dp"
+                        android:backgroundTint="#00BCD4"
+                        android:contentDescription="카테고리 선택"
+                        />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:text="상세설명"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:contentDescription="이미지 추가"
+                        app:srcCompat="@android:drawable/ic_input_add" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:background="@drawable/background_borderline"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:gravity="center"
+                    android:hint="상세 설명을 입력해주세요."
+                    android:textColor="#000000"
+                    android:textColorHint="#969696"
+                    android:textSize="20sp"
+                    />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/imagerecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/background_borderline"/>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="bottom"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/cancelbutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:backgroundTint="@color/red"
+                        android:text="취소"
+                        android:textSize="20sp"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/completebutton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:backgroundTint="@color/teal_700"
+                        android:text="작성"
+                        android:textSize="20sp"
+                        />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</layout>

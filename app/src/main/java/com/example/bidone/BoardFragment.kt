@@ -53,7 +53,7 @@ class BoardFragment : Fragment() {
 
         //스피너에서 외뢰 게시판을 클릭했을 때 해당 게시판으로 이동
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val selectedItem = parent.getItemAtPosition(position).toString()
                 if (selectedItem == "의뢰게시판") {
                     val intent = Intent(activity, RequestboardActivity::class.java)
@@ -73,7 +73,7 @@ class BoardFragment : Fragment() {
     //WritingboardActivity 화면 전환 리스너
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val writingButton: ImageButton = view.findViewById(R.id.writingButton)
+        val writingButton: Button = view.findViewById(R.id.writingButton)
         writingButton.setOnClickListener {
             activity?.let {
                 val intent = Intent(it, WritingboardActivity::class.java)
