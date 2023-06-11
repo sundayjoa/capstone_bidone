@@ -1,214 +1,240 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/visualbutton"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".MembershipActivity">
 
-    <TextView
-        android:id="@+id/membership"
-        android:layout_width="121dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginBottom="20dp"
-        android:text="회원가입"
-        android:textColor="#00BCD4"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/nameText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="스크롤뷰">
 
-    <EditText
-        android:id="@+id/nameText"
-        android:layout_width="224dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="9dp"
-        android:ems="10"
-        android:hint="이름을 입력하세요."
-        android:inputType="textPersonName"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        app:layout_constraintBottom_toTopOf="@+id/idText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/membership" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/idText"
-        android:layout_width="224dp"
-        android:layout_height="0dp"
-        android:ems="10"
-        android:hint="사용할 id를 입력하세요."
-        android:inputType="textEmailAddress"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        app:layout_constraintBottom_toTopOf="@+id/checkbutton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameText" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="30dp"
+                android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/checkbutton"
-        android:layout_width="106dp"
-        android:layout_height="0dp"
-        android:backgroundTint="#3F51B5"
-        android:text="중복 확인"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/checkText"
-        app:layout_constraintEnd_toEndOf="@+id/idText"
-        app:layout_constraintStart_toStartOf="@+id/idText"
-        app:layout_constraintTop_toBottomOf="@+id/idText" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/checkText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="25dp"
-        android:hint="중복 확인"
-        android:textAlignment="center"
-        android:textColorHint="#969696"
-        app:layout_constraintBottom_toTopOf="@+id/passwdText"
-        app:layout_constraintEnd_toEndOf="@+id/checkbutton"
-        app:layout_constraintTop_toBottomOf="@+id/checkbutton" />
+                    <TextView
+                        android:id="@+id/membership"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:text="회원가입"
+                        android:textColor="#00BCD4"
+                        android:textSize="30sp"
+                        />
 
-    <EditText
-        android:id="@+id/passwdText"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="93dp"
-        android:layout_marginEnd="1dp"
-        android:ems="10"
-        android:hint="사용할 PW를 입력하세요."
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        app:layout_constraintBottom_toTopOf="@+id/passwdcheckText"
-        app:layout_constraintEnd_toStartOf="@+id/visualButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkText" />
+                    <EditText
+                        android:id="@+id/nameText"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:ems="10"
+                        android:hint="이름을 입력하세요."
+                        android:inputType="textPersonName"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        />
 
-    <EditText
-        android:id="@+id/passwdcheckText"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="93dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="3dp"
-        android:ems="10"
-        android:hint="pw를 다시 한 번 입력하세요."
-        android:inputType="textPassword"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        app:layout_constraintBottom_toTopOf="@+id/pwcheckText"
-        app:layout_constraintEnd_toStartOf="@+id/visualButton2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwdText" />
+                    <EditText
+                        android:id="@+id/idText"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:hint="사용할 id를 입력하세요."
+                        android:inputType="textEmailAddress"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        />
 
-    <TextView
-        android:id="@+id/pwcheckText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="17dp"
-        android:hint="중복 확인"
-        android:textAlignment="center"
-        android:textColorHint="#969696"
-        app:layout_constraintBottom_toTopOf="@+id/birthText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwdcheckText" />
+                    <Button
+                        android:id="@+id/checkbutton"
+                        android:layout_width="106dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="#3F51B5"
+                        android:text="중복 확인"
+                        android:textSize="16sp"
+                        />
 
-    <ImageButton
-        android:id="@+id/visualButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="4dp"
-        android:backgroundTint="#003F51B5"
-        app:layout_constraintBottom_toTopOf="@+id/visualButton2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/passwdText"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@android:drawable/ic_menu_view"
-        tools:ignore="SpeakableTextPresentCheck" />
+                    <TextView
+                        android:id="@+id/checkText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:hint="중복 확인"
+                        android:textAlignment="center"
+                        android:textColorHint="#969696"
+                        />
 
-    <ImageButton
-        android:id="@+id/visualButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="11dp"
-        android:backgroundTint="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/passwdcheckText"
-        app:layout_constraintTop_toBottomOf="@+id/visualButton"
-        app:srcCompat="@android:drawable/ic_menu_view"
-        tools:ignore="SpeakableTextPresentCheck" />
+                </LinearLayout>
 
-    <EditText
-        android:id="@+id/birthText"
-        android:layout_width="224dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="53dp"
-        android:ems="10"
-        android:hint="생년월일:예)980101"
-        android:inputType="number"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        app:layout_constraintBottom_toTopOf="@+id/certificationbutton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pwcheckText" />
+            </FrameLayout>
 
-    <EditText
-        android:id="@+id/phoneText"
-        android:layout_width="224dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginBottom="56dp"
-        android:ems="10"
-        android:hint="번호 입력:010xxxxxxxx"
-        android:inputType="phone"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/birthText" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="vertical">
 
-    <Button
-        android:id="@+id/certificationbutton"
-        android:layout_width="106dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="9dp"
-        android:backgroundTint="#3F51B5"
-        android:text="휴대폰 인증"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintEnd_toEndOf="@+id/phoneText"
-        app:layout_constraintStart_toStartOf="@+id/phoneText"
-        app:layout_constraintTop_toBottomOf="@+id/birthText" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="106dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="58dp"
-        android:backgroundTint="#009688"
-        android:text="가입 완료"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/certificationbutton" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <EditText
+                        android:id="@+id/passwdText"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="60dp"
+                        android:layout_marginEnd="1dp"
+                        android:ems="10"
+                        android:hint="사용할 PW를 입력하세요."
+                        android:inputType="textPassword"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/visualButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#003F51B5"
+                        app:srcCompat="@android:drawable/ic_menu_view"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/passwdcheckText"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="60dp"
+                        android:ems="10"
+                        android:hint="pw를 다시 한 번 입력하세요."
+                        android:inputType="textPassword"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        />
+                    <ImageButton
+                        android:id="@+id/visualButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#00FFFFFF"
+                        app:srcCompat="@android:drawable/ic_menu_view"
+                        tools:ignore="SpeakableTextPresentCheck" />
+
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/pwcheckText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="중복 확인"
+                        android:textAlignment="center"
+                        android:textColorHint="#969696"
+                        />
+
+                    <EditText
+                        android:id="@+id/birthText"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:ems="10"
+                        android:hint="생년월일:예)980101"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        />
+
+                    <EditText
+                        android:id="@+id/phoneText"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:ems="10"
+                        android:hint="번호 입력:010xxxxxxxx"
+                        android:inputType="phone"
+                        android:textAlignment="center"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        />
+
+                    <Button
+                        android:id="@+id/certificationbutton"
+                        android:layout_width="106dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="5dp"
+                        android:backgroundTint="#3F51B5"
+                        android:text="휴대폰 인증"
+                        android:textSize="13sp"
+                        />
+
+                    <Button
+                        android:id="@+id/button2"
+                        android:layout_width="106dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:backgroundTint="#009688"
+                        android:text="가입 완료"
+                        android:textSize="16sp"
+                        />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    </layout>

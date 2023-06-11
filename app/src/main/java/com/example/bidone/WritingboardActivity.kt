@@ -31,6 +31,7 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 import android.provider.Settings
 import android.Manifest
+import android.graphics.Bitmap
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.text.Editable
@@ -43,6 +44,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import java.io.ByteArrayOutputStream
+
 
 class WritingboardActivity : AppCompatActivity() {
     //썸네일 이미지 버튼을 눌러 이미지 추가
@@ -153,6 +158,22 @@ class WritingboardActivity : AppCompatActivity() {
             dialog.setContentView(R.layout.activity_writingdialog)
             dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+            //작품 번호 지정해주기
+            //ip 주소 현재 ip 주소로 항상 바꾸기
+            val number_url = "http://192.168.0.251/random_number.php"
+
+            val number_queue = Volley.newRequestQueue(this)
+            val number_stringRequest = StringRequest(Request.Method.GET, number_url,
+                Response.Listener<String> { response ->
+                    // Display the response string
+                    Log.d("Response", response)
+                    val worknumberText = dialog.findViewById<TextView>(R.id.worknumberText)
+                    worknumberText.text = response
+                },
+                Response.ErrorListener { /* Handle error */ })
+
+            number_queue.add(number_stringRequest)
+
             //경매 시작 날짜를 정하는 스피너
             val dateTextView = dialog.findViewById<TextView>(R.id.dateTextView)
             val datePicker = DatePicker(this)
@@ -200,6 +221,7 @@ class WritingboardActivity : AppCompatActivity() {
             var user = "userID"
             val titletext = findViewById<EditText>(R.id.title)
             val simple_explain = findViewById<EditText>(R.id.simple_explanation)
+            val spinner = findViewById<Spinner>(R.id.spinner2)
             val detail_explain = findViewById<EditText>(R.id.editText)
             val datetext = dialog.findViewById<TextView>(R.id.dateTextView)
             val timetext = dialog.findViewById<TextView>(R.id.timeTextView)
@@ -209,35 +231,26 @@ class WritingboardActivity : AppCompatActivity() {
 
             //팝업창에서 확인 버튼 눌렀을 때
             nextButton.setOnClickListener {
-
-                //작품 번호를 위해 랜덤한 숫자를 생성해서 넘겨주는 코드
-                //mysql work_number에 존재하지 않는 숫자를 반환
-                //서버에 넘겨주는 부분까지 동작
-                val number_queue = Volley.newRequestQueue(this)
-                //본인 ip 주소로 바꾸기
-                val number_url = "http://ip 주소/random_number.php"
-                val params = HashMap<String, String>()
-
-                val stringRequest = StringRequest(Request.Method.GET, number_url,
-                    Response.Listener<String> { response ->
-                        val worknumber = response.toLong()
-                        params["worknumber"] = worknumber.toString()
-                        // 랜덤한 숫자 사용
-                    },
-                    Response.ErrorListener { error ->
-                        // 오류 처리
-                    })
-                number_queue.add(stringRequest)
+                //이미지 저장하기
 
 
+                
+                //DB 연동을 위해 쓰는 코드
                 val userID = user
                 val title = titletext.text.toString()
                 val simple_explanation = simple_explain.text.toString()
+                val category = spinner.selectedItem.toString()
                 val detail_explanation = detail_explain.text.toString()
                 val datetextView = datetext.text.toString()
                 val timetextView = timetext.text.toString()
                 val starttext = starteditText.text.toString()
                 val increasetext = increaseeditText.text.toString()
+
+                // 업로드 날짜를 저장하기 위한 현재 시간 가져오기
+                val currentTime = Calendar.getInstance().time
+                // 시간 형식 변환
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                val upload = dateFormat.format(currentTime)
 
 
                 //카테고리에서 정한 품목을 전송하는 코드
@@ -277,16 +290,16 @@ class WritingboardActivity : AppCompatActivity() {
 
                 //DB에 데이터 전송하기(test)
                 val request = object : StringRequest(
-                    //본인 ip 주소로 바꾸기
-                    Method.POST, "http://ip 주소/boardinfo.php",
+                    //ip 현재 ip 주소로 항상 바꾸기
+                    Method.POST, "http://192.168.0.251/boardinfo.php",
                     Response.Listener { response ->
                         //서버에서 전송하는 응답 내용 확인
                         Log.d("Response", response)
                         Log.d("JSON Data", response)
 
                         val responseData = JSONObject(response)
-                        if (responseData.has("성공!")) {
-                            val success = responseData.getBoolean("성공!")
+                        if (responseData.has("success")) {
+                            val success = responseData.getBoolean("success")
                             if (success) {
                                 // Request succeeded
                                 Toast.makeText(this, "요청이 성공했습니다.", Toast.LENGTH_SHORT).show()
@@ -311,19 +324,27 @@ class WritingboardActivity : AppCompatActivity() {
                         val params = HashMap<String, String>()
                         //아직 추가 안함
                         params["thumbnail"] = ""
-                        params["category"] = ""
                         params["detail_image"] = ""
-                        params["upload"] = ""
 
                         //추가 완료
+                        //작품 번호 지정
+                        val worknumberText = dialog.findViewById<TextView>(R.id.worknumberText)
+                        val workNumber = worknumberText.text.toString()
+                        Log.d("WorkNumber", workNumber)
+
+                        params["worknumber"] = workNumber
+
                         params["userID"] = userID
                         params["title"] = title
                         params["simple_explanation"] = simple_explanation
+                        params["category"] = category
                         params["detail_explanation"] = detail_explanation
+                        params["detail_image"] = ""
                         params["datetextView"] = datetextView
                         params["timetextView"] = timetextView
                         params["starttext"] = starttext
                         params["increasetext"] = increasetext
+                        params["upload"] = upload
                         return params
                     }
                 }

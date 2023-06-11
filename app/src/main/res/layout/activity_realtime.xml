@@ -1,68 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     tools:context=".RealtimeActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/searchText"
-        android:layout_width="310dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="15dp"
-        android:background="@drawable/background_borderline"
-        android:hint="  검색어를 입력하세요."
-        android:singleLine="false"
-        android:textColor="#000000"
-        android:textColorHint="#969696"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.113"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/searchButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="78dp"
-        android:contentDescription="키워드 찾기"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toEndOf="@+id/searchText"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_search" />
+            <ImageView
+                android:id="@+id/rt_backButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_chat_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        style="@android:style/Widget.Material.Spinner.Underlined"
-        android:layout_width="150dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="15dp"
-        android:backgroundTint="#00BCD4"
-        android:contentDescription="카테고리 설정"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchText" />
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="실시간 경매 작품"
+                android:textSize="22sp"
+                android:textColor="#000000"
+                />
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginStart="10dp"
-        android:text="실시간 경매 작품"
-        android:textSize="24sp"
-        android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.065"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        </FrameLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/searchText"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_borderline"
+                    android:hint="  검색어를 입력하세요."
+                    android:singleLine="false"
+                    android:textColor="#000000"
+                    android:textColorHint="#969696"
+                    android:textSize="18sp"
+                    />
+
+                <ImageButton
+                    android:id="@+id/searchButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:contentDescription="키워드 찾기"
+                    app:srcCompat="@android:drawable/ic_menu_search" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinner"
+                style="@android:style/Widget.Material.Spinner.Underlined"
+                android:layout_width="150dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="25dp"
+                android:backgroundTint="#00BCD4"
+                android:contentDescription="카테고리 설정"
+                />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/realrecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/background_borderline"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</layout>
