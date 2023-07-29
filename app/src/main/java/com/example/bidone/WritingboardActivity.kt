@@ -31,8 +31,11 @@ import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 import android.provider.Settings
 import android.Manifest
+import android.app.Activity
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.graphics.Rect
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.Spannable
@@ -47,30 +50,43 @@ import com.android.volley.Request
 import okhttp3.Callback
 import okhttp3.OkHttpClient
 import java.io.ByteArrayOutputStream
-
+import android.util.Base64
+import org.json.JSONException
 
 class WritingboardActivity : AppCompatActivity() {
+
     //썸네일 이미지 버튼을 눌러 이미지 추가
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri ->
             uri?.let {
                 val imageButton = findViewById<ImageButton>(R.id.imageButton)
                 imageButton.scaleType = ImageView.ScaleType.FIT_CENTER
-
                 imageButton.setImageURI(uri)
+
             }
         }
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == Activity.RESULT_OK) {
+
+        }
+    }
 
     //리사이클러 뷰에 이미지 추가
     private val REQUEST_CODE = 1
     private val imageList = mutableListOf<Uri>()
     private lateinit var imageAdapter: ImageAdapter
-    private val getimageContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            imageList.add(uri)
-            imageAdapter.notifyDataSetChanged()
+    private val getimageContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            if (uri != null) {
+                imageList.add(uri)
+                imageAdapter.notifyDataSetChanged()
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +120,11 @@ class WritingboardActivity : AppCompatActivity() {
                 if (s != null && s.length > 50) {
                     simpleText.setText(s.subSequence(0, 50))
                     simpleText.setSelection(50)
-                    Toast.makeText(this@WritingboardActivity, "간단 설명은 50자 이내로 적어주세요.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@WritingboardActivity,
+                        "간단 설명은 50자 이내로 적어주세요.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
@@ -135,14 +155,15 @@ class WritingboardActivity : AppCompatActivity() {
         }
 
         val recyclerView = findViewById<RecyclerView>(R.id.imagerecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         imageAdapter = ImageAdapter(imageList)
         imageAdapter.onItemClick = { position ->
             imageList.removeAt(position)
             imageAdapter.notifyItemRemoved(position)
         }
         recyclerView.adapter = imageAdapter
-        recyclerView.addItemDecoration(SpacesItemDecoration(0))
+
 
 
         //취소 버튼 누르면 다시 게시판 화면으로 전환
@@ -160,7 +181,7 @@ class WritingboardActivity : AppCompatActivity() {
 
             //작품 번호 지정해주기
             //ip 주소 현재 ip 주소로 항상 바꾸기
-            val number_url = "http://192.168.0.251/random_number.php"
+            val number_url = "http://192.168.219.106/random_number.php"
 
             val number_queue = Volley.newRequestQueue(this)
             val number_stringRequest = StringRequest(Request.Method.GET, number_url,
@@ -231,10 +252,14 @@ class WritingboardActivity : AppCompatActivity() {
 
             //팝업창에서 확인 버튼 눌렀을 때
             nextButton.setOnClickListener {
-                //이미지 저장하기
 
+                //썸네일 저장
+                val bitmap = (imageButton.drawable as BitmapDrawable).bitmap
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                val byteArray = stream.toByteArray()
+                val thumbnail = Base64.encodeToString(byteArray, Base64.DEFAULT)
 
-                
                 //DB 연동을 위해 쓰는 코드
                 val userID = user
                 val title = titletext.text.toString()
@@ -253,182 +278,190 @@ class WritingboardActivity : AppCompatActivity() {
                 val upload = dateFormat.format(currentTime)
 
 
-                //카테고리에서 정한 품목을 전송하는 코드
+                    //카테고리에서 정한 품목을 전송하는 코드
 
 
-                //날짜 선택 if문
-                if (datetextView.isEmpty()) {
-                    //textView가 비어 있는 경우 경고 메시지를 표시.
-                    Toast.makeText(this, "날짜를 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    //textView가 비어 있지 않은 경우 다음 단계로 진행
-                }
+                    //날짜 선택 if문
+                    if (datetextView.isEmpty()) {
+                        //textView가 비어 있는 경우 경고 메시지를 표시.
+                        Toast.makeText(this, "날짜를 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        //textView가 비어 있지 않은 경우 다음 단계로 진행
+                    }
 
-                //시간 선택 if문
-                if (timetextView.isEmpty()) {
-                    //textView가 비어 있는 경우 경고 메시지를 표시
-                    Toast.makeText(this, "시간을 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    //textView가 비어 있지 않은 경우 다음 단계로 진행
-                }
+                    //시간 선택 if문
+                    if (timetextView.isEmpty()) {
+                        //textView가 비어 있는 경우 경고 메시지를 표시
+                        Toast.makeText(this, "시간을 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        //textView가 비어 있지 않은 경우 다음 단계로 진행
+                    }
 
-                //시작 가격 if문
-                if (starttext.isEmpty()) {
-                    // EditText가 비어 있는 경우 경고 메시지를 표시.
-                    Toast.makeText(this, "시작 가격을 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    // EditText가 비어 있지 않은 경우 다음 단계로 진행
-                }
+                    //시작 가격 if문
+                    if (starttext.isEmpty()) {
+                        // EditText가 비어 있는 경우 경고 메시지를 표시.
+                        Toast.makeText(this, "시작 가격을 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // EditText가 비어 있지 않은 경우 다음 단계로 진행
+                    }
 
-                //증가 가격 if문
-                if (increasetext.isEmpty()) {
-                    // EditText가 비어 있는 경우 경고 메시지를 표시.
-                    Toast.makeText(this, "증가 가격을 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show()
-                } else {
-                    // EditText가 비어 있지 않은 경우 다음 단계로 진행
-                }
+                    //증가 가격 if문
+                    if (increasetext.isEmpty()) {
+                        // EditText가 비어 있는 경우 경고 메시지를 표시.
+                        Toast.makeText(this, "증가 가격을 반드시 입력해야 합니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // EditText가 비어 있지 않은 경우 다음 단계로 진행
+                    }
 
-                //DB에 데이터 전송하기(test)
-                val request = object : StringRequest(
-                    //ip 현재 ip 주소로 항상 바꾸기
-                    Method.POST, "http://192.168.0.251/boardinfo.php",
-                    Response.Listener { response ->
-                        //서버에서 전송하는 응답 내용 확인
-                        Log.d("Response", response)
-                        Log.d("JSON Data", response)
+                    //DB에 데이터 전송하기(test)
+                    val request = object : StringRequest(
+                        //ip 현재 ip 주소로 항상 바꾸기
+                        Method.POST, "http://192.168.219.106/boardinfo.php",
+                        Response.Listener { response ->
+                            //서버에서 전송하는 응답 내용 확인
+                            Log.d("Response", response)
+                            Log.d("JSON Data", response)
 
-                        val responseData = JSONObject(response)
-                        if (responseData.has("success")) {
-                            val success = responseData.getBoolean("success")
-                            if (success) {
-                                // Request succeeded
-                                Toast.makeText(this, "요청이 성공했습니다.", Toast.LENGTH_SHORT).show()
+                            val responseData = JSONObject(response)
+                            if (responseData.has("success")) {
+                                val success = responseData.getBoolean("success")
+                                if (success) {
+                                    // Request succeeded
+                                    Toast.makeText(this, "요청이 성공했습니다.", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    // Request failed
+                                    Toast.makeText(this, "요청이 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                }
                             } else {
-                                // Request failed
-                                Toast.makeText(this, "요청이 실패했습니다.", Toast.LENGTH_SHORT).show()
+                                // Handle the case where the key "성공!" is not found
                             }
-                        } else {
-                            // Handle the case where the key "성공!" is not found
+                        },
+                        Response.ErrorListener { error ->
+                            Toast.makeText(
+                                this,
+                                "An error occurred: ${error.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
-                    },
-                    Response.ErrorListener { error ->
-                        Toast.makeText(
-                            this,
-                            "An error occurred: ${error.message}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    ) {
+                        //서버에 정보 넘겨주기
+                        override fun getParams(): MutableMap<String, String>? {
+                            val params = HashMap<String, String>()
+
+                            //추가 완료
+                            //작품 번호 지정
+                            val worknumberText = dialog.findViewById<TextView>(R.id.worknumberText)
+                            val workNumber = worknumberText.text.toString()
+                            Log.d("WorkNumber", workNumber)
+
+
+                            params["worknumber"] = workNumber
+
+                            params["userID"] = userID
+                            params["title"] = title
+                            params["thumbnail"] = thumbnail
+                            params["simple_explanation"] = simple_explanation
+                            params["category"] = category
+                            params["detail_explanation"] = detail_explanation
+                            params["detail_image"] = ""
+                            params["datetextView"] = datetextView
+                            params["timetextView"] = timetextView
+                            params["starttext"] = starttext
+                            params["increasetext"] = increasetext
+                            params["upload"] = upload
+                            return params
+                        }
                     }
-                ) {
-                    //서버에 정보 넘겨주기
-                    override fun getParams(): MutableMap<String, String>? {
-                        val params = HashMap<String, String>()
-                        //아직 추가 안함
-                        params["thumbnail"] = ""
-                        params["detail_image"] = ""
 
-                        //추가 완료
-                        //작품 번호 지정
-                        val worknumberText = dialog.findViewById<TextView>(R.id.worknumberText)
-                        val workNumber = worknumberText.text.toString()
-                        Log.d("WorkNumber", workNumber)
-
-                        params["worknumber"] = workNumber
-
-                        params["userID"] = userID
-                        params["title"] = title
-                        params["simple_explanation"] = simple_explanation
-                        params["category"] = category
-                        params["detail_explanation"] = detail_explanation
-                        params["detail_image"] = ""
-                        params["datetextView"] = datetextView
-                        params["timetextView"] = timetextView
-                        params["starttext"] = starttext
-                        params["increasetext"] = increasetext
-                        params["upload"] = upload
-                        return params
-                    }
+                    val queue = Volley.newRequestQueue(this)
+                    queue.add(request)
+                    //팝업 창 닫기
+                    dialog.dismiss()
+                    //게시판 창 닫기
+                    finish()
                 }
 
-                val queue = Volley.newRequestQueue(this)
-                queue.add(request)
-                //팝업 창 닫기
-                dialog.dismiss()
-                //게시판 창 닫기
-                finish()
+                //취소 버튼 누르면 팝업 창 닫기
+                val cancelbtn = dialog.findViewById<Button>(R.id.cancelbtn)
+                cancelbtn.setOnClickListener() {
+                    dialog.dismiss()
+                }
+
+                //팝업 창 보여주기
+                dialog.show()
             }
 
-            //취소 버튼 누르면 팝업 창 닫기
-            val cancelbtn = dialog.findViewById<Button>(R.id.cancelbtn)
-            cancelbtn.setOnClickListener() {
-                dialog.dismiss()
+            //스피너 관련
+            val spinner = findViewById<Spinner>(R.id.spinner2)
+            val items = arrayOf("수공예품", "중고물품")
+            val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter
+        }
+
+        //썸네일 이미지 버튼을 입력받기 위한 추가 코드
+        override fun onRequestPermissionsResult(
+            requestCode: Int,
+            permissions: Array<out String>,
+            grantResults: IntArray
+        ) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getContent.launch("image/*")
             }
-
-            //팝업 창 보여주기
-            dialog.show()
-        }
-
-        //스피너 관련
-        val spinner = findViewById<Spinner>(R.id.spinner2)
-        val items = arrayOf("수공예품", "중고물품")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
-    }
-
-    //썸네일 이미지 버튼을 입력받기 위한 추가 코드
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            getContent.launch("image/*")
         }
     }
-}
 
-//이미지 어댑터
-class ImageAdapter(private val imageList: MutableList<Uri>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
-    var onItemClick: ((Int) -> Unit)? = null
+    //이미지 어댑터
+    class ImageAdapter(private val imageList: MutableList<Uri>) :
+        RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+        var onItemClick: ((Int) -> Unit)? = null
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val imageView: ImageView = itemView.findViewById(R.id.imageView)
 
-        //리사이클러뷰에서 사진을 클릭하면 삭제
-        init {
-            itemView.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    onItemClick?.invoke(position)
+            //리사이클러뷰에서 사진을 클릭하면 삭제
+            init {
+                itemView.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        onItemClick?.invoke(position)
+                    }
                 }
             }
         }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val uri = imageList[position]
+            holder.imageView.setImageURI(uri)
+        }
+
+        override fun getItemCount(): Int {
+            return imageList.size
+        }
+
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
-        return ViewHolder(view)
-    }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val uri = imageList[position]
-        holder.imageView.setImageURI(uri)
-    }
-
-    override fun getItemCount(): Int {
-        return imageList.size
-    }
-}
-
-//리사이클러뷰 사진 간격 조절
-class SpacesItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-        outRect.left = space
-        outRect.right = space
-        outRect.bottom = space
-        if (parent.getChildAdapterPosition(view) == 0) {
-            outRect.top = space
+    //리사이클러뷰 사진 간격 조절
+    class SpacesItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.left = space
+            outRect.right = space
+            outRect.bottom = space
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.top = space
+            }
         }
     }
-}
