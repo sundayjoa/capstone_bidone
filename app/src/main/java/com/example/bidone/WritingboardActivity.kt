@@ -2,24 +2,18 @@ package com.example.bidone
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.app.TimePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
-import android.telecom.Call
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.Response
 import org.w3c.dom.Text
@@ -32,9 +26,7 @@ import org.json.JSONObject
 import android.provider.Settings
 import android.Manifest
 import android.app.Activity
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Editable
@@ -80,13 +72,16 @@ class WritingboardActivity : AppCompatActivity() {
     private val REQUEST_CODE = 1
     private val imageList = mutableListOf<Uri>()
     private lateinit var imageAdapter: ImageAdapter
-    private val getimageContent =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            if (uri != null) {
+    private val getimageContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            if (imageList.size >= 7) {
+                Toast.makeText(this, "이미지는 7장 이상 첨부할 수 없습니다!", Toast.LENGTH_SHORT).show()
+            } else {
                 imageList.add(uri)
                 imageAdapter.notifyDataSetChanged()
             }
         }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -181,7 +176,7 @@ class WritingboardActivity : AppCompatActivity() {
 
             //작품 번호 지정해주기
             //ip 주소 현재 ip 주소로 항상 바꾸기
-            val number_url = "http://192.168.219.106/random_number.php"
+            val number_url = "http://192.168.0.4/random_number.php"
 
             val number_queue = Volley.newRequestQueue(this)
             val number_stringRequest = StringRequest(Request.Method.GET, number_url,
@@ -253,29 +248,63 @@ class WritingboardActivity : AppCompatActivity() {
             //팝업창에서 확인 버튼 눌렀을 때
             nextButton.setOnClickListener {
 
-                //썸네일 저장
-                val bitmap = (imageButton.drawable as BitmapDrawable).bitmap
-                val stream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                val byteArray = stream.toByteArray()
-                val thumbnail = Base64.encodeToString(byteArray, Base64.DEFAULT)
+                //리사이클러뷰 이미지들 압축하기 위한 코드
+                fun compressImage(bitmap: Bitmap, quality: Int): ByteArray {
+                    val stream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, quality, stream)
+                    return stream.toByteArray()
+                }
+
+                fun uriToBitmap(uri: Uri): Bitmap? {
+                    return try {
+                        val inputStream = contentResolver.openInputStream(uri)
+                        BitmapFactory.decodeStream(inputStream)
+                    } catch (e: IOException) {
+                        e.printStackTrace()
+                        null
+                    }
+                }
+
+                //썸네일 압축 저장
+                fun compressAndEncodeThumbnail(bitmap: Bitmap, quality: Int): String {
+                    val thumbnailByteArray = compressImage(bitmap, quality)
+                    return Base64.encodeToString(thumbnailByteArray, Base64.DEFAULT)
+                }
+
+                val thumbnailBitmap = (imageButton.drawable as BitmapDrawable).bitmap
+                val thumbnail = compressAndEncodeThumbnail(thumbnailBitmap, 100)
+
+
+                // 추가
+                // 리사이클러뷰 이미지들을 압축해서 Base64로 인코딩
+                val compressedImageList = mutableListOf<String>()
+
+                for (uri in imageList) {
+                    val recyclerViewBitmap = uriToBitmap(uri)
+                    recyclerViewBitmap?.let {
+                        val compressedByteArray = compressImage(it, 50) // 리사이클러뷰 이미지만 압축
+                        val imageString = Base64.encodeToString(compressedByteArray, Base64.DEFAULT)
+                        compressedImageList.add(imageString)
+                    }
+                }
+
 
                 //DB 연동을 위해 쓰는 코드
-                val userID = user
-                val title = titletext.text.toString()
-                val simple_explanation = simple_explain.text.toString()
-                val category = spinner.selectedItem.toString()
-                val detail_explanation = detail_explain.text.toString()
-                val datetextView = datetext.text.toString()
-                val timetextView = timetext.text.toString()
-                val starttext = starteditText.text.toString()
-                val increasetext = increaseeditText.text.toString()
+                    val userID = user
+                    val title = titletext.text.toString()
+                    val simple_explanation = simple_explain.text.toString()
+                    val category = spinner.selectedItem.toString()
+                    val detail_explanation = detail_explain.text.toString()
+                    val datetextView = datetext.text.toString()
+                    val timetextView = timetext.text.toString()
+                    val starttext = starteditText.text.toString()
+                    val increasetext = increaseeditText.text.toString()
 
-                // 업로드 날짜를 저장하기 위한 현재 시간 가져오기
-                val currentTime = Calendar.getInstance().time
-                // 시간 형식 변환
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                val upload = dateFormat.format(currentTime)
+                    // 업로드 날짜를 저장하기 위한 현재 시간 가져오기
+                    val currentTime = Calendar.getInstance().time
+                    // 시간 형식 변환
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    val upload = dateFormat.format(currentTime)
 
 
                     //카테고리에서 정한 품목을 전송하는 코드
@@ -316,7 +345,7 @@ class WritingboardActivity : AppCompatActivity() {
                     //DB에 데이터 전송하기(test)
                     val request = object : StringRequest(
                         //ip 현재 ip 주소로 항상 바꾸기
-                        Method.POST, "http://192.168.219.106/boardinfo.php",
+                        Method.POST, "http://192.168.0.4/boardinfo.php",
                         Response.Listener { response ->
                             //서버에서 전송하는 응답 내용 확인
                             Log.d("Response", response)
@@ -363,7 +392,7 @@ class WritingboardActivity : AppCompatActivity() {
                             params["simple_explanation"] = simple_explanation
                             params["category"] = category
                             params["detail_explanation"] = detail_explanation
-                            params["detail_image"] = ""
+                            params["detail_image"] = compressedImageList.joinToString(",")
                             params["datetextView"] = datetextView
                             params["timetextView"] = timetextView
                             params["starttext"] = starttext
@@ -380,6 +409,7 @@ class WritingboardActivity : AppCompatActivity() {
                     //게시판 창 닫기
                     finish()
                 }
+
 
                 //취소 버튼 누르면 팝업 창 닫기
                 val cancelbtn = dialog.findViewById<Button>(R.id.cancelbtn)
