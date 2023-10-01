@@ -1,6 +1,8 @@
 package com.example.bidone
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +11,21 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.json.JSONArray
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
+import android.util.Base64
+import android.util.Log
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.*
+import java.io.IOException
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -25,6 +42,7 @@ class BoardFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +53,8 @@ class BoardFragment : Fragment() {
 
     }
 
-    override fun onCreateView(
+
+override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
@@ -66,13 +85,129 @@ class BoardFragment : Fragment() {
             }
         }
 
+    //리사이클러뷰 관련 코드
 
-        return view
+    // 리사이클러뷰 초기화
+    val recyclerView = view.findViewById<RecyclerView>(R.id.boardrecyclerView)
+    val board_adapter = BoardAdapter(emptyList()) // 초기에 빈 리스트로 어댑터 생성
+    recyclerView.adapter = board_adapter
+    recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+    // MySQL 데이터 가져오기 및 리사이클러뷰에 표시
+    fetchDataFromMySQL(board_adapter)
+
+    //리사이클러뷰를 위로 올려 새로고침
+
+    val swipeRefreshLayout = view.findViewById<SwipeRefreshLayout>(R.id.swipeRefreshLayout)
+
+    //리사이클러뷰 reload 함수
+    fun reload(board_adapter: BoardAdapter) {
+        //데이터 로드
+        fetchDataFromMySQL(board_adapter)
+
     }
 
-    //WritingboardActivity 화면 전환 리스너
+    swipeRefreshLayout.setOnRefreshListener {
+        reload(board_adapter)
+
+        // 작업이 완료되면 아래 코드를 호출하여 새로고침을 종료
+        swipeRefreshLayout.isRefreshing = false
+
+    }
+
+
+    return view
+    }
+
+    // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
+    val phpUrl = "http://192.168.219.106/auctionboard.php"
+
+    // 2. 데이터를 저장할 모델 클래스 정의
+    data class BoardItem(
+        val title: String,
+        val simple_explanation: String,
+        val uploadData: String,
+        val userID: String
+    )
+
+    //리사이클러뷰에 Mysql 연동
+    private fun fetchDataFromMySQL(adapter: BoardAdapter) {
+
+        // 3. 데이터를 가져와서 리사이클러뷰에 표시하는 함수
+            val boardItems = mutableListOf<BoardItem>()
+
+            // MySQL 데이터 가져오기
+            // (네트워크 요청 등을 위해 별도의 스레드에서 실행)
+            val request = Request.Builder().url(phpUrl).build()
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    // 요청 실패 시 처리할 내용
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val jsonData = response.body?.string()
+
+                    // JSON 데이터 파싱
+                    val jsonArray = JSONArray(jsonData)
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        val title = jsonObject.getString("title")
+                        val simple_explanation = jsonObject.getString("simple_explanation")
+                        val upload_date = jsonObject.getString("upload_date")
+                        val userID = jsonObject.getString("userID")
+
+                        boardItems.add(BoardItem(title, simple_explanation, upload_date, userID))
+                    }
+
+                    // UI 업데이트는 메인 스레드에서 실행
+                    activity?.runOnUiThread {
+                        // 리사이클러뷰에 데이터 표시하기
+                        recyclerView.adapter = BoardAdapter(boardItems)
+                    }
+                }
+            })
+    }
+
+
+    // 4. 리사이클러뷰 어댑터 클래스 정의
+    class BoardAdapter(private val items: List<BoardItem>) : RecyclerView.Adapter<BoardAdapter.ViewHolder>() {
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            // item_board.xml에서 정의한 뷰들과 매칭되는 변수들 선언
+            val titleTextView: TextView = itemView.findViewById(R.id.title)
+            val simple_explanationTextView: TextView = itemView.findViewById(R.id.simple_explanation)
+            val uploadDataTextView: TextView = itemView.findViewById(R.id.time)
+            val userIDTextView: TextView = itemView.findViewById(R.id.userID)
+        }
+
+
+        //리사이클러뷰 viewholder
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_board, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            // 데이터를 뷰에 바인딩
+            holder.titleTextView.text = items[position].title
+            holder.simple_explanationTextView.text = items[position].simple_explanation
+            holder.uploadDataTextView.text = items[position].uploadData
+            holder.userIDTextView.text = items[position].userID
+        }
+
+        override fun getItemCount(): Int {
+            return items.size
+        }
+    }
+
+
+        //WritingboardActivity 화면 전환 리스너
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+            recyclerView = view.findViewById(R.id.boardrecyclerView)
+
+        // 작성 버튼 코드 작성
         val writingButton: Button = view.findViewById(R.id.writingButton)
         writingButton.setOnClickListener {
             activity?.let {
@@ -82,7 +217,7 @@ class BoardFragment : Fragment() {
         }
     }
 
-    companion object {
+        companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

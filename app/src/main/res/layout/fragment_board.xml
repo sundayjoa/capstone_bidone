@@ -73,15 +73,25 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <!-- 이곳에 리사이클러뷰 추가 -->
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/imagerecyclerView"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="80dp"
-                android:background="@drawable/background_borderline"/>
+                android:layout_marginBottom="80dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/boardrecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="80dp"
+                    tools:listitem="@layout/item_board"
+                    android:background="@drawable/background_borderline"/>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <Button
                 android:id="@+id/writingButton"
@@ -91,6 +101,7 @@
                 android:layout_gravity="bottom|center"
                 android:background="@drawable/background_radious"
                 android:text="글쓰기" />
+
         </FrameLayout>
 
     </LinearLayout>

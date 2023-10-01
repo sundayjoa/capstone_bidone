@@ -64,4 +64,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     //volley 라이브러리 추가
     implementation 'com.android.volley:volley:1.2.1'
+    //Mysql 커넥트
+    implementation 'mysql:mysql-connector-java:8.0.26'
+    //swiperefreshlayout 라이브러리 추가
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
 }
