@@ -3,12 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.bidone">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <!--인터넷 이용을 위해 추가-->
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <!--갤러리 권한-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 인터넷 이용을 위해 추가 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 갤러리 권한 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -20,67 +16,65 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Bidone"
-        tools:targetApi="31"
         android:usesCleartextTraffic="true"
-        >
-
+        tools:targetApi="31">
+        <activity
+            android:name=".mainboardActivity"
+            android:exported="false" />
         <activity
             android:name=".WritingdialogActivity"
-            android:exported="false"
             android:configChanges="orientation|screenSize"
-            />
-            <!--위의 코드로 삼성 휴대폰으로 연동할 때 오류 해결-->
+            android:exported="false" /> <!-- 위의 코드로 삼성 휴대폰으로 연동할 때 오류 해결 -->
         <activity
             android:name=".RequestchatActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".RequestwritingActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".RequestboardActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".RealtimeActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".FavoriteActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".WritingboardActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".NaviActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".Find_Pw"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".Find_Id"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".MembershipActivity"
-            android:exported="false"
-            android:configChanges="orientation|screenSize"/>
+            android:configChanges="orientation|screenSize"
+            android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="true"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
