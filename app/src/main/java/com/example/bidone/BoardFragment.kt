@@ -120,14 +120,14 @@ override fun onCreateView(
     }
 
     // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
-    val phpUrl = "http://192.168.219.106/auctionboard.php"
+    val phpUrl = "http://192.168.219.107/auctionboard.php"
 
     // 2. 데이터를 저장할 모델 클래스 정의
     data class BoardItem(
         val title: String,
         val simple_explanation: String,
         val uploadData: String,
-        val userID: String
+        val userName: String
     )
 
     //리사이클러뷰에 Mysql 연동
@@ -155,9 +155,9 @@ override fun onCreateView(
                         val title = jsonObject.getString("title")
                         val simple_explanation = jsonObject.getString("simple_explanation")
                         val upload_date = jsonObject.getString("upload_date")
-                        val userID = jsonObject.getString("userID")
+                        val userName = jsonObject.getString("userName")
 
-                        boardItems.add(BoardItem(title, simple_explanation, upload_date, userID))
+                        boardItems.add(BoardItem(title, simple_explanation, upload_date, userName))
                     }
 
                     // UI 업데이트는 메인 스레드에서 실행
@@ -177,7 +177,7 @@ override fun onCreateView(
             val titleTextView: TextView = itemView.findViewById(R.id.title)
             val simple_explanationTextView: TextView = itemView.findViewById(R.id.simple_explanation)
             val uploadDataTextView: TextView = itemView.findViewById(R.id.time)
-            val userIDTextView: TextView = itemView.findViewById(R.id.userID)
+            val userNameTextView: TextView = itemView.findViewById(R.id.userName)
         }
 
 
@@ -192,7 +192,7 @@ override fun onCreateView(
             holder.titleTextView.text = items[position].title
             holder.simple_explanationTextView.text = items[position].simple_explanation
             holder.uploadDataTextView.text = items[position].uploadData
-            holder.userIDTextView.text = items[position].userID
+            holder.userNameTextView.text = items[position].userName
         }
 
         override fun getItemCount(): Int {

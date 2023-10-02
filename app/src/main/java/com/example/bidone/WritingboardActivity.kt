@@ -176,7 +176,7 @@ class WritingboardActivity : AppCompatActivity() {
 
             //작품 번호 지정해주기
             //ip 주소 현재 ip 주소로 항상 바꾸기
-            val number_url = "http://192.168.219.106/random_number.php"
+            val number_url = "http://192.168.219.107/random_number.php"
 
             val number_queue = Volley.newRequestQueue(this)
             val number_stringRequest = StringRequest(Request.Method.GET, number_url,
@@ -234,7 +234,10 @@ class WritingboardActivity : AppCompatActivity() {
             //DB 연결 위해 설정
 
             //user는 나중에 mysql에 회원정보 DB가 생겼을 떄 연동
+            //회원가입 시스템 완성되면 변경
             var user = "userID"
+            var userName = "userName"
+
             val titletext = findViewById<EditText>(R.id.title)
             val simple_explain = findViewById<EditText>(R.id.simple_explanation)
             val spinner = findViewById<Spinner>(R.id.spinner2)
@@ -290,7 +293,10 @@ class WritingboardActivity : AppCompatActivity() {
 
 
                 //DB 연동을 위해 쓰는 코드
+                    //회원가입 시스템 완성하면 변경
                     val userID = user
+                    val userName = userName
+
                     val title = titletext.text.toString()
                     val simple_explanation = simple_explain.text.toString()
                     val category = spinner.selectedItem.toString()
