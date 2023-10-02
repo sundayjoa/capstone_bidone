@@ -42,10 +42,10 @@
 
                         <ImageView
                             android:id="@+id/bookmarkButton"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_marginEnd= "10dp"
-                            android:layout_marginTop="10dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_marginEnd= "15dp"
+                            android:layout_marginTop="13dp"
                             android:layout_marginBotton="10dp"
                             android:layout_gravity="end"
                             android:src="@drawable/ic_star"
@@ -149,13 +149,32 @@
                 android:text="경매시작시간"
                 android:textColor="#FF6D00"/>
 
-            <Button
-                android:id="@+id/my_button"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:layout_gravity="center"
-                android:backgroundTint="#A3A3A3"
-                android:text="경매 참여" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/ptBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#A3A3A3"
+                    android:text="경매 참여" />
+
+                <ImageView
+                    android:id="@+id/questionBtn"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="15dp"
+                    android:src="@drawable/ic_chat" />
+
+
+            </FrameLayout>
+
+
 
         </LinearLayout>
 
