@@ -176,7 +176,7 @@ class WritingboardActivity : AppCompatActivity() {
 
             //작품 번호 지정해주기
             //ip 주소 현재 ip 주소로 항상 바꾸기
-            val number_url = "http://192.168.219.107/random_number.php"
+            val number_url = "http://192.168.219.106/random_number.php"
 
             val number_queue = Volley.newRequestQueue(this)
             val number_stringRequest = StringRequest(Request.Method.GET, number_url,
@@ -393,6 +393,7 @@ class WritingboardActivity : AppCompatActivity() {
                             params["worknumber"] = workNumber
 
                             params["userID"] = userID
+                            params["userName"] = userName
                             params["title"] = title
                             params["thumbnail"] = thumbnail
                             params["simple_explanation"] = simple_explanation

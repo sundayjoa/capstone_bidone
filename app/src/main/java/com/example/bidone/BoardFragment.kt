@@ -1,13 +1,11 @@
 package com.example.bidone
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +17,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import android.util.Base64
 import android.util.Log
+import android.view.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +37,8 @@ private const val ARG_PARAM2 = "param2"
  * Use the [BoardFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+
 class BoardFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -115,20 +116,21 @@ override fun onCreateView(
 
     }
 
-
     return view
     }
 
     // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
-    val phpUrl = "http://192.168.219.107/auctionboard.php"
+    val phpUrl = "http://192.168.219.106/auctionboard.php"
 
     // 2. 데이터를 저장할 모델 클래스 정의
     data class BoardItem(
         val title: String,
         val simple_explanation: String,
         val uploadData: String,
-        val userName: String
+        val userName: String,
+
     )
+
 
     //리사이클러뷰에 Mysql 연동
     private fun fetchDataFromMySQL(adapter: BoardAdapter) {
@@ -152,6 +154,7 @@ override fun onCreateView(
                     val jsonArray = JSONArray(jsonData)
                     for (i in 0 until jsonArray.length()) {
                         val jsonObject = jsonArray.getJSONObject(i)
+                        val work_number = jsonObject.getString("work_number")
                         val title = jsonObject.getString("title")
                         val simple_explanation = jsonObject.getString("simple_explanation")
                         val upload_date = jsonObject.getString("upload_date")
@@ -170,18 +173,23 @@ override fun onCreateView(
     }
 
 
+
     // 4. 리사이클러뷰 어댑터 클래스 정의
     class BoardAdapter(private val items: List<BoardItem>) : RecyclerView.Adapter<BoardAdapter.ViewHolder>() {
+
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             // item_board.xml에서 정의한 뷰들과 매칭되는 변수들 선언
             val titleTextView: TextView = itemView.findViewById(R.id.title)
-            val simple_explanationTextView: TextView = itemView.findViewById(R.id.simple_explanation)
+            val simple_explanationTextView: TextView =
+                itemView.findViewById(R.id.simple_explanation)
             val uploadDataTextView: TextView = itemView.findViewById(R.id.time)
             val userNameTextView: TextView = itemView.findViewById(R.id.userName)
+
         }
 
 
-        //리사이클러뷰 viewholder
+
+    //리사이클러뷰 viewholder
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_board, parent, false)
             return ViewHolder(view)
@@ -198,7 +206,9 @@ override fun onCreateView(
         override fun getItemCount(): Int {
             return items.size
         }
+
     }
+
 
 
         //WritingboardActivity 화면 전환 리스너

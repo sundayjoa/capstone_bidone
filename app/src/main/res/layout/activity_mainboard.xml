@@ -36,7 +36,7 @@
                             android:layout_height="40dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBotton="10dp"
+                            android:layout_marginBottom="10dp"
                             android:src="@drawable/ic_chat_back"
                             />
 
@@ -44,12 +44,25 @@
                             android:id="@+id/bookmarkButton"
                             android:layout_width="35dp"
                             android:layout_height="35dp"
-                            android:layout_marginEnd= "15dp"
+                            android:layout_marginEnd= "80dp"
                             android:layout_marginTop="13dp"
-                            android:layout_marginBotton="10dp"
+                            android:layout_marginBottom="10dp"
                             android:layout_gravity="end"
                             android:src="@drawable/ic_star"
                             />
+
+                        <TextView
+                            android:id="@+id/bkmarkView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="19dp"
+                            android:layout_marginEnd="13dp"
+                            android:layout_gravity="end"
+                            android:text="북마크 수"
+                            android:textColor="#FF6D00"
+                            android:textSize="16sp"
+                            />
+
 
                     </FrameLayout>
 
@@ -84,8 +97,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="15dp"
                         android:layout_marginStart="100dp"
-                        android:layout_marginEnd="100dp"
-                        android:background="@drawable/background_borderline"/>
+                        android:layout_marginEnd="100dp" />
 
                     <TextView
                         android:id="@+id/detail_explanation"
