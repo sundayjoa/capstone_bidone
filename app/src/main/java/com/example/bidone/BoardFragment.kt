@@ -128,6 +128,12 @@ override fun onCreateView(
         val simple_explanation: String,
         val uploadData: String,
         val userName: String,
+        val worknumber: String,
+        val detailExplanation: String,
+        val start: String,
+        val increase: String,
+        val date: String,
+        val time: String
 
     )
 
@@ -154,13 +160,19 @@ override fun onCreateView(
                     val jsonArray = JSONArray(jsonData)
                     for (i in 0 until jsonArray.length()) {
                         val jsonObject = jsonArray.getJSONObject(i)
-                        val work_number = jsonObject.getString("work_number")
                         val title = jsonObject.getString("title")
                         val simple_explanation = jsonObject.getString("simple_explanation")
                         val upload_date = jsonObject.getString("upload_date")
                         val userName = jsonObject.getString("userName")
+                        val worknumber = jsonObject.getString("work_number")
+                        val detail_explanation = jsonObject.getString("detail_explanation")
+                        val start = jsonObject.getString("start")
+                        val increase = jsonObject.getString("increase")
+                        val date = jsonObject.getString("date")
+                        val time = jsonObject.getString("time")
 
-                        boardItems.add(BoardItem(title, simple_explanation, upload_date, userName))
+                        boardItems.add(BoardItem(title, simple_explanation, upload_date, userName, worknumber,
+                            detail_explanation, start, increase, date, time))
                     }
 
                     // UI 업데이트는 메인 스레드에서 실행
@@ -177,13 +189,36 @@ override fun onCreateView(
     // 4. 리사이클러뷰 어댑터 클래스 정의
     class BoardAdapter(private val items: List<BoardItem>) : RecyclerView.Adapter<BoardAdapter.ViewHolder>() {
 
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
             // item_board.xml에서 정의한 뷰들과 매칭되는 변수들 선언
             val titleTextView: TextView = itemView.findViewById(R.id.title)
             val simple_explanationTextView: TextView =
                 itemView.findViewById(R.id.simple_explanation)
             val uploadDataTextView: TextView = itemView.findViewById(R.id.time)
             val userNameTextView: TextView = itemView.findViewById(R.id.userName)
+            val worknumberTextView: TextView = itemView.findViewById(R.id.worknumber)
+
+            //게시글을 누르면 mainboardAcitivity로 이동
+            init {
+                itemView.setOnClickListener(this)
+            }
+            override fun onClick(v: View?) {
+                val position = adapterPosition
+                val item = items[position]
+
+                val intent = Intent(itemView.context, mainboardActivity::class.java)
+                //작품번호 넘겨주기
+                intent.putExtra("worknumber", item.worknumber)
+                intent.putExtra("title", item.title)
+                intent.putExtra("userName", item.userName)
+                intent.putExtra("detail_explanation", item.detailExplanation)
+                intent.putExtra("start", item.start)
+                intent.putExtra("increase", item.increase)
+                intent.putExtra("date", item.date)
+                intent.putExtra("time", item.time)
+
+                itemView.context.startActivity(intent)
+            }
 
         }
 
@@ -201,6 +236,7 @@ override fun onCreateView(
             holder.simple_explanationTextView.text = items[position].simple_explanation
             holder.uploadDataTextView.text = items[position].uploadData
             holder.userNameTextView.text = items[position].userName
+            holder.worknumberTextView.text = items[position].worknumber
         }
 
         override fun getItemCount(): Int {
