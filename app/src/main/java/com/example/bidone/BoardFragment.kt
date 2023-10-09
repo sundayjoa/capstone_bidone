@@ -133,7 +133,8 @@ override fun onCreateView(
         val start: String,
         val increase: String,
         val date: String,
-        val time: String
+        val time: String,
+        val userID: String
 
     )
 
@@ -170,9 +171,10 @@ override fun onCreateView(
                         val increase = jsonObject.getString("increase")
                         val date = jsonObject.getString("date")
                         val time = jsonObject.getString("time")
+                        val userID = jsonObject.getString("userID")
 
                         boardItems.add(BoardItem(title, simple_explanation, upload_date, userName, worknumber,
-                            detail_explanation, start, increase, date, time))
+                            detail_explanation, start, increase, date, time, userID))
                     }
 
                     // UI 업데이트는 메인 스레드에서 실행
@@ -207,7 +209,7 @@ override fun onCreateView(
                 val item = items[position]
 
                 val intent = Intent(itemView.context, mainboardActivity::class.java)
-                //작품번호 넘겨주기
+                //작품 정보 넘겨주기
                 intent.putExtra("worknumber", item.worknumber)
                 intent.putExtra("title", item.title)
                 intent.putExtra("userName", item.userName)
@@ -216,6 +218,7 @@ override fun onCreateView(
                 intent.putExtra("increase", item.increase)
                 intent.putExtra("date", item.date)
                 intent.putExtra("time", item.time)
+                intent.putExtra("userID", item.userID)
 
                 itemView.context.startActivity(intent)
             }
