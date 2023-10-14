@@ -166,7 +166,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -175,13 +175,24 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
+                    <Button
+                        android:id="@+id/pwcheckBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text = "중복 확인"
+                        android:textSize="16sp"
+                        android:backgroundTint="#3F51B5"
+
+                        />
+
                     <TextView
                         android:id="@+id/pwcheckText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:hint="중복 확인"
                         android:textAlignment="center"
-                        android:textColorHint="#969696"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
                         />
 
                     <EditText
@@ -237,4 +248,4 @@
 
     </ScrollView>
 
-    </layout>
+</layout>
