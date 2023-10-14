@@ -10,7 +10,7 @@
     	die("Connection failed: " . $conn->connect_error);
 	}
 
-	$sql = "SELECT work_number, title, simple_explanation, upload_date, userName, thumbnail, detail_explanation, start, increase, date, time FROM board ORDER BY upload_date DESC";
+	$sql = "SELECT work_number, title, simple_explanation, upload_date, userName, thumbnail, detail_explanation, start, increase, date, time, userID FROM board ORDER BY upload_date DESC";
 	$result = $conn->query($sql);
 
 	if ($result->num_rows > 0) {
