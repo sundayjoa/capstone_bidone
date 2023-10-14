@@ -40,6 +40,7 @@
                     android:layout_marginEnd="15dp"
                     android:background="@drawable/background_borderline"
                     android:hint="  제목을 입력해주세요"
+                    android:gravity="center"
                     android:textColor="#000000"
                     android:textColorHint="#969696"
                     android:textSize="24sp" />
@@ -93,10 +94,11 @@
                     android:textColor="@color/black"/>
 
                 <EditText
-                    android:id="@+id/textView2"
+                    android:id="@+id/hope_purchase"
                     android:layout_width="160dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="12dp"
+                    android:gravity="center"
                     android:background="@drawable/background_borderline"
                     />
 
