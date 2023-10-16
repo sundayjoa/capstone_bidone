@@ -68,15 +68,26 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rq_recyclerView"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="80dp"
-                android:background="@drawable/background_borderline"/>
+                android:layout_marginBottom="80dp">
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/requestrecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="80dp"
+                    tools:listitem="@layout/item_request"
+                    android:background="@drawable/background_borderline"
+                    />
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
             <Button
                 android:id="@+id/rwriteButton"

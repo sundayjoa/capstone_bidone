@@ -33,6 +33,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/id"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="아이디를 입력해 주세요"
@@ -46,6 +47,7 @@
             android:layout_height="0.5dp"/>
 
         <EditText
+            android:id="@+id/phonenumber"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:hint="전화번호를 입력해주세요"
@@ -69,8 +71,8 @@
 
 
         <Button
+            android:id="@+id/findBtn"
             android:layout_margin="20dp"
-
             android:background="@drawable/background_radious"
             android:text="비밀번호 찾기"
             android:layout_width="match_parent"
