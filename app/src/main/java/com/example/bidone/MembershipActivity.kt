@@ -198,6 +198,10 @@ class MembershipActivity : AppCompatActivity() {
 
                                 val queue = Volley.newRequestQueue(this)
                                 queue.add(request)
+
+                                //창 닫기
+                                finish()
+                                
                             } else { // birthText의 길이가 6이 아닌 경우
                                 // 알림창을 띄우고 이전 화면으로 돌아가기
                                 Toast.makeText(

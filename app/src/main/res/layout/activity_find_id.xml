@@ -34,6 +34,7 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/name"
             style="@style/AuthEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -47,6 +48,7 @@
             android:background="#999999" />
 
         <EditText
+            android:id="@+id/birth"
             style="@style/AuthEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -60,6 +62,7 @@
             android:background="#999999" />
 
         <EditText
+            android:id="@+id/phonenumber"
             style="@style/AuthEditText"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -82,8 +85,8 @@
 
 
         <Button
+            android:id="@+id/findid_Btn"
             android:layout_width="match_parent"
-
             android:layout_height="50dp"
             android:layout_margin="20dp"
             android:background="@drawable/background_radious"

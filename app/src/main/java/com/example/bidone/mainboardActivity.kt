@@ -242,6 +242,9 @@ class mainboardActivity : AppCompatActivity() {
 
                         val queue = Volley.newRequestQueue(this)
                         queue.add(request)
+
+                        alertDialog.dismiss()
+
                     }
                     .setNegativeButton("취소") { dialog, id ->
                         dialog.cancel()
