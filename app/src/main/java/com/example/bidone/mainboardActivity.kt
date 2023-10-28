@@ -23,6 +23,7 @@ import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 import android.app.AlertDialog
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.android.volley.toolbox.StringRequest
@@ -80,6 +81,12 @@ class mainboardActivity : AppCompatActivity() {
 
         starttimeView.text = starttime
 
+        //경매종료시간 넘겨 받기
+        val finishdateView = findViewById<TextView>(R.id.finish_time)
+        val finishdate = "종료 시간: " + intent.getStringExtra("finish")
+
+        finishdateView.text = finishdate
+
         //판매자 ID 넘겨 받기
         val data = intent.getStringExtra("userID")
 
@@ -93,11 +100,14 @@ class mainboardActivity : AppCompatActivity() {
         // 시간 포맷 지정
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
 
-        // 현재 시간과 비교할 시간 생성
-        val compareTime = formatter.parse(intent.getStringExtra("date") + " " + intent.getStringExtra("time"))
+        // 경매 시작 시간 파싱
+        val auctionStartTime = formatter.parse(intent.getStringExtra("date") + " " + intent.getStringExtra("time"))
 
-        // 현재 시간이 비교할 시간 이후인지 확인
-        if (currentTime.after(compareTime)) {
+        // 경매 종료 시간 파싱
+        val auctionEndTime = formatter.parse(intent.getStringExtra("finish"))
+
+        // 현재 시간이 경매 시작 시간 이후이며 종료 시간 이전인지 확인
+        if (currentTime.after(auctionStartTime) && currentTime.before(auctionEndTime)) {
             // 버튼 활성화 및 색상 변경
             ptBtn.isEnabled = true
             ptBtn.setBackgroundColor(Color.RED)
@@ -193,10 +203,11 @@ class mainboardActivity : AppCompatActivity() {
                         // MySQL에 정보 저장
                         val workNumber = numberTextView.text.toString()
                         val data = intent.getStringExtra("userID").toString()
-                        val consumerID = "userID"
+                        val (userId, userName) = getUserInfo(this)
                         val increaseinfo = increaseTextView.text.toString()
                         val currentPrice = current.text.toString()
                         val price = (increaseinfo.toInt() + currentPrice.toInt()).toString()
+                        val finish = intent.getStringExtra("finish").toString()
 
                         //DB에 데이터 전송하기
                         val request = object : StringRequest(
@@ -232,8 +243,15 @@ class mainboardActivity : AppCompatActivity() {
 
                                 params["work_number"] = workNumber
                                 params["sellerID"] = data
-                                params["consumerID"] = consumerID
+                                userId?.let {
+                                    params["consumerID"] = it
+                                }
+
+                                userName?.let {
+                                    params["consumerName"] = it
+                                }
                                 params["price"] = price
+                                params["finish_date"] = finish
 
                                 return params
 
@@ -252,10 +270,14 @@ class mainboardActivity : AppCompatActivity() {
                 val alert = bid_builder.create()
                 alert.show()
             }
-
-
         }
+    }
 
+    fun getUserInfo(context: Context): Pair<String?, String?> {
+        val sharedPreferences = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("ID", null)
+        val userName = sharedPreferences.getString("userName", null)
+        return Pair(userId, userName)
     }
 
 }

@@ -12,7 +12,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="80dp"
+            android:layout_marginBottom="100dp"
             android:orientation="vertical">
 
             <ScrollView
@@ -155,7 +155,7 @@
 
     <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="100dp"
             android:layout_gravity="bottom">
 
         <LinearLayout
@@ -172,6 +172,17 @@
                 android:layout_marginStart="15dp"
                 android:textSize="13dp"
                 android:text="경매시작시간"
+                android:textColor="#FF6D00"/>
+
+            <TextView
+                android:id="@+id/finish_time"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:gravity="end"
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                android:textSize="13dp"
+                android:text="경매종료시간"
                 android:textColor="#FF6D00"/>
 
             <FrameLayout

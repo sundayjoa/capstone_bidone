@@ -1,6 +1,7 @@
 package com.example.bidone
 
 import android.app.AlertDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -74,8 +75,7 @@ class RequestwritingActivity : AppCompatActivity() {
 
                 //DB에 데이터 전송 및 저장
                 val random_number = view.findViewById<TextView>(R.id.request_number)
-                val userID = "userID"
-                val userName = "userName"
+                val (userId, userName) = getUserInfo(this)
                 val inputtitle = findViewById<TextView>(R.id.inputTitle)
                 val inputRequest = findViewById<TextView>(R.id.inputRequest)
                 val hope = findViewById<TextView>(R.id.hope_purchase)
@@ -127,8 +127,13 @@ class RequestwritingActivity : AppCompatActivity() {
                         val params = HashMap<String, String>()
 
                         params["request_number"] = request_number
-                        params["userID"] = userID
-                        params["userName"] = userName
+                        userId?.let {
+                            params["userID"] = it
+                        }
+
+                        userName?.let {
+                            params["userName"] = it
+                        }
                         params["title"] = title
                         params["content"] = content
                         params["hope_purchase"] = hope_purchase
@@ -147,5 +152,12 @@ class RequestwritingActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    fun getUserInfo(context: Context): Pair<String?, String?> {
+        val sharedPreferences = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("ID", null)
+        val userName = sharedPreferences.getString("userName", null)
+        return Pair(userId, userName)
     }
 }

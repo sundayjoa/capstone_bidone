@@ -26,6 +26,7 @@ import org.json.JSONObject
 import android.provider.Settings
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -234,9 +235,6 @@ class WritingboardActivity : AppCompatActivity() {
             //DB 연결 위해 설정
 
             //user는 나중에 mysql에 회원정보 DB가 생겼을 떄 연동
-            //회원가입 시스템 완성되면 변경
-            var user = "userID"
-            var userName = "userName"
 
             val titletext = findViewById<EditText>(R.id.title)
             val simple_explain = findViewById<EditText>(R.id.simple_explanation)
@@ -294,8 +292,7 @@ class WritingboardActivity : AppCompatActivity() {
 
                 //DB 연동을 위해 쓰는 코드
                     //회원가입 시스템 완성하면 변경
-                    val userID = user
-                    val userName = userName
+                    val (userId, userName) = getUserInfo(this)
 
                     val title = titletext.text.toString()
                     val simple_explanation = simple_explain.text.toString()
@@ -306,11 +303,31 @@ class WritingboardActivity : AppCompatActivity() {
                     val starttext = starteditText.text.toString()
                     val increasetext = increaseeditText.text.toString()
 
+                    // SimpleDateFormat을 사용하여 문자열 날짜를 Date 객체로 변환
+                    val fullDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+                    val userSelectedDate = fullDateFormat.parse("$datetextView $timetextView")
+
+                    // Calendar 객체를 생성하고 사용자가 선택한 날짜와 시간으로 설정
+                    val calendar = Calendar.getInstance()
+                    calendar.time = userSelectedDate!!
+
+                    // Calendar 객체에 일주일 더하기
+                    calendar.add(Calendar.WEEK_OF_YEAR, 1)
+
+                    // finish_date 변수 생성
+                    val finish_date = fullDateFormat.format(calendar.time)
+
                     // 업로드 날짜를 저장하기 위한 현재 시간 가져오기
                     val currentTime = Calendar.getInstance().time
                     // 시간 형식 변환
                     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                     val upload = dateFormat.format(currentTime)
+
+                    // 종료시간 정의
+                    val finishCalendar = Calendar.getInstance()
+                    finishCalendar.time = currentTime
+                    finishCalendar.add(Calendar.WEEK_OF_YEAR, 1) // 현재 시간에서 일주일 더하기
+                    val finish = dateFormat.format(finishCalendar.time)
 
 
                     //카테고리에서 정한 품목을 전송하는 코드
@@ -392,8 +409,13 @@ class WritingboardActivity : AppCompatActivity() {
 
                             params["worknumber"] = workNumber
 
-                            params["userID"] = userID
-                            params["userName"] = userName
+                            userId?.let {
+                                params["userID"] = it
+                            }
+
+                            userName?.let {
+                                params["userName"] = it
+                            }
                             params["title"] = title
                             params["thumbnail"] = thumbnail
                             params["simple_explanation"] = simple_explanation
@@ -405,6 +427,7 @@ class WritingboardActivity : AppCompatActivity() {
                             params["starttext"] = starttext
                             params["increasetext"] = increasetext
                             params["upload"] = upload
+                            params["finish"] = finish
                             return params
                         }
                     }
@@ -486,6 +509,13 @@ class WritingboardActivity : AppCompatActivity() {
 
     }
 
+    fun getUserInfo(context: Context): Pair<String?, String?> {
+        val sharedPreferences = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("ID", null)
+        val userName = sharedPreferences.getString("userName", null)
+        return Pair(userId, userName)
+    }
+
 
     //리사이클러뷰 사진 간격 조절
     class SpacesItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
@@ -503,3 +533,5 @@ class WritingboardActivity : AppCompatActivity() {
             }
         }
     }
+
+

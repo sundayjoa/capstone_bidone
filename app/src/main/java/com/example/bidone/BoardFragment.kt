@@ -134,6 +134,7 @@ override fun onCreateView(
         val increase: String,
         val date: String,
         val time: String,
+        val finish: String,
         val userID: String
 
     )
@@ -171,10 +172,11 @@ override fun onCreateView(
                         val increase = jsonObject.getString("increase")
                         val date = jsonObject.getString("date")
                         val time = jsonObject.getString("time")
+                        val finish = jsonObject.getString("finish_date")
                         val userID = jsonObject.getString("userID")
 
                         boardItems.add(BoardItem(title, simple_explanation, upload_date, userName, worknumber,
-                            detail_explanation, start, increase, date, time, userID))
+                            detail_explanation, start, increase, date, time, finish, userID))
                     }
 
                     // UI 업데이트는 메인 스레드에서 실행
@@ -218,6 +220,7 @@ override fun onCreateView(
                 intent.putExtra("increase", item.increase)
                 intent.putExtra("date", item.date)
                 intent.putExtra("time", item.time)
+                intent.putExtra("finish", item.finish)
                 intent.putExtra("userID", item.userID)
 
                 itemView.context.startActivity(intent)
@@ -266,7 +269,8 @@ override fun onCreateView(
         }
     }
 
-        companion object {
+
+    companion object {
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
