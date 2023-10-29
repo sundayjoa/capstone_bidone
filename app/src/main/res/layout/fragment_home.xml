@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_marginStart="10dp"
-                        android:text="현재 관심도가 높은 작품"
+                        android:text="공지"
                         android:textColor="#000000"
                         android:textSize="24sp"
                         />
@@ -62,10 +62,10 @@
                         android:layout_weight="1" />
 
                     <ImageButton
-                        android:id="@+id/favButton"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginTop="10dp"
+                        android:id="@+id/noticeButton"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="15dp"
                         android:layout_marginEnd="15dp"
                         android:background="@drawable/ic_more"
                         android:contentDescription="인기 게시글"
@@ -81,7 +81,7 @@
                 android:orientation="horizontal">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/favorite_recyclerView"
+                    android:id="@+id/notice_recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
@@ -106,9 +106,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="실시간 경매 작품"
+                    android:text="Hot"
                     android:textSize="24sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/red"
                     />
 
                 <View
@@ -117,9 +117,10 @@
                     android:layout_weight="1" />
 
                 <ImageButton
-                    android:id="@+id/rtimeButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/favButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
                     android:background="@drawable/ic_more"
                     android:contentDescription="실시간 게시글"
@@ -131,16 +132,17 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="300dp"
                 android:orientation="horizontal">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rt_recyclerView"
+                    android:id="@+id/fv_recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
+                    tools:listitem="@layout/item_board"
                     android:background="@drawable/background_borderline"/>
 
             </FrameLayout>
@@ -160,7 +162,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="의뢰게시판"
+                    android:text="실시간"
                     android:textSize="24sp"
                     android:textColor="#000000"
                     />
@@ -171,9 +173,10 @@
                     android:layout_weight="1" />
 
                 <ImageButton
-                    android:id="@+id/requestboardButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/rtimeButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="15dp"
                     android:background="@drawable/ic_more"
                     android:contentDescription="의뢰 게시판"
@@ -185,16 +188,17 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="300dp"
                 android:orientation="horizontal">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/request_recyclerView"
+                    android:id="@+id/rt_recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
                     android:layout_marginBottom="20dp"
+                    tools:listitem="@layout/item_board"
                     android:background="@drawable/background_borderline"/>
 
             </FrameLayout>

@@ -25,6 +25,7 @@ import java.util.*
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -35,6 +36,7 @@ import java.sql.DriverManager
 import java.sql.SQLException
 
 class mainboardActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mainboard)
@@ -115,6 +117,66 @@ class mainboardActivity : AppCompatActivity() {
             // 버튼 비활성화 및 색상 변경
             ptBtn.isEnabled = false
         }
+
+        //즐겨찾기
+        val bookmarkBtn = findViewById<ImageView>(R.id.bookmarkButton)
+
+        //즐겨찾기 여부 확인
+        checkBookmarkStatus()
+
+        bookmarkBtn.setOnClickListener{
+            val work_number = intent.getStringExtra("worknumber").toString()
+            val uploader_id = intent.getStringExtra("userID").toString()
+            val (userId, _) = getUserInfo(this)
+
+            //DB에 데이터 전송하기
+            val bookmark_request = object : StringRequest(
+                Method.POST, "http://192.168.219.106/bookmark.php",
+                Response.Listener { response ->
+                    //서버에서 전송하는 응답 내용 확인
+                    Log.d("Response", response)
+                    Log.d("JSON Data", response)
+
+                    when (response) {
+                        "bookmark_added" -> {
+                            bookmarkBtn.setImageResource(R.drawable.ic_star_yellow)
+                            updateBookmarkCount(1) // 1을 추가
+                        }
+                        "bookmark_removed" -> {
+                            bookmarkBtn.setImageResource(R.drawable.ic_star)
+                            updateBookmarkCount(-1) // 1을 감소
+                        }
+                    }
+
+                },
+                Response.ErrorListener { error ->
+                    //서버에서 전송하는 응답 내용 확인
+                    Log.d("Error", error.toString())
+                }
+
+            ) {
+                //서버에 정보 넘겨주기
+                override fun getParams(): MutableMap<String, String>? {
+                    val params = HashMap<String, String>()
+
+                    params["work_number"] = work_number
+                    params["uploader_id"] = uploader_id
+                    userId?.let {
+                        params["consumerID"] = it
+                    }
+
+                    return params
+
+                }
+            }
+
+            val boookmark_queue = Volley.newRequestQueue(this)
+            boookmark_queue.add(bookmark_request)
+
+        }
+
+        //전체 즐겨찾기 수
+        fetchBookmarkCount()
 
 
         //경매 참여 버튼 클릭 이벤트
@@ -278,6 +340,72 @@ class mainboardActivity : AppCompatActivity() {
         val userId = sharedPreferences.getString("ID", null)
         val userName = sharedPreferences.getString("userName", null)
         return Pair(userId, userName)
+    }
+
+    //즐겨찾기
+    //즐겨찾기 여부 확인
+    fun checkBookmarkStatus() {
+
+        val bookmarkBtn = findViewById<ImageView>(R.id.bookmarkButton)
+        val work_number = intent.getStringExtra("worknumber").toString()
+        val (userId, _) = getUserInfo(this)
+
+        val checkBookmarkRequest = object : StringRequest(
+            Method.POST, "http://192.168.219.106/checkBookmark.php",
+            Response.Listener { response ->
+                when (response.trim()) {
+                    "exists" -> {
+                        bookmarkBtn.setImageResource(R.drawable.ic_star_yellow)
+                    }
+                    "not_exists" -> {
+                        bookmarkBtn.setImageResource(R.drawable.ic_star)
+                    }
+                }
+            },
+            Response.ErrorListener { error ->
+                Log.d("Error", error.toString())
+            }
+        ) {
+            override fun getParams(): MutableMap<String, String>? {
+                val params = HashMap<String, String>()
+                params["work_number"] = work_number
+                userId?.let {
+                    params["consumerID"] = it
+                }
+
+                return params
+            }
+        }
+
+        val requestQueue = Volley.newRequestQueue(this)
+        requestQueue.add(checkBookmarkRequest)
+    }
+
+    //bookmark 수 가져오기
+    private fun fetchBookmarkCount() {
+
+        val workNumber = intent.getStringExtra("worknumber").toString()
+
+        val count_request = StringRequest(
+            com.android.volley.Request.Method.GET, "http://192.168.219.106/count_bookmark.php?work_number=$workNumber",
+            Response.Listener { response ->
+                val bkmarkView = findViewById<TextView>(R.id.bkmarkView)
+                bkmarkView.text = response
+            },
+            Response.ErrorListener { error ->
+                Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+            })
+
+        val count_queue = Volley.newRequestQueue(this)
+        count_queue.add(count_request)
+
+    }
+
+    //즐겨찾기 클릭 시 추가 및 삭제
+    fun updateBookmarkCount(change: Int) {
+        val bkmarkView = findViewById<TextView>(R.id.bkmarkView)
+        val currentCount = bkmarkView.text.toString().toIntOrNull() ?: 0
+        bkmarkView.text = (currentCount + change).toString()
     }
 
 }
