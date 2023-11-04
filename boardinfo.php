@@ -18,13 +18,14 @@
 	$start = $_POST["starttext"];
 	$increase = $_POST["increasetext"];
 	$upload_date = $_POST["upload"];
+	$finish_date = $_POST["finish"];
 
 	$thumbnail = strip_tags($_POST["thumbnail"]);
 	$decodedImage = base64_decode($thumbnail);
 
-	$statement = mysqli_prepare($con, "INSERT INTO board VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+	$statement = mysqli_prepare($con, "INSERT INTO board VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
-	mysqli_stmt_bind_param($statement,"ssssssssssssss",$work_number,$title,$userID,$userName,$thumbnail,$simple_explanation,$category,$detail_explanation,$detail_image,$date,$time,$start,$increase,$upload_date);
+	mysqli_stmt_bind_param($statement,"sssssssssssssss",$work_number,$title,$userID,$userName,$thumbnail,$simple_explanation,$category,$detail_explanation,$detail_image,$date,$time,$start,$increase,$upload_date,$finish_date);
 	mysqli_stmt_execute($statement);
 
 	$response = array();

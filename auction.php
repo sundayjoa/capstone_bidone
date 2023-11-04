@@ -13,7 +13,9 @@
 	$work_number = $_POST['work_number'];
 	$sellerID = $_POST['sellerID'];
 	$consumerID = $_POST['consumerID'];
+	$consumerName = $_POST['consumerName'];
 	$price = $_POST['price'];
+	$finish_date = $_POST['finish_date'];
 
 
 	$sql_check = "SELECT * FROM auction WHERE work_number = '$work_number'";
@@ -25,14 +27,14 @@
 
 	if ($num_rows > 0) {
     
-   	 $sql_update = "UPDATE auction SET sellerID = '$sellerID', consumerID = '$consumerID', price = '$price' WHERE work_number = 	'$work_number'";
+   	 $sql_update = "UPDATE auction SET sellerID = '$sellerID', consumerName = '$consumerName', consumerID = '$consumerID', price = '$price', finish_date = '$finish_date' WHERE work_number = '$work_number'";
  	   if (mysqli_query($conn, $sql_update)) {
         	echo json_encode(array("success" => true)); 
   	  } else {
       	  echo "Error: " . $sql_update . "<br>" . mysqli_error($conn);
    	 }
 	} else {
-  	  $sql_insert = "INSERT INTO auction (work_number, sellerID, consumerID, price) VALUES ('$work_number', '$sellerID', '$consumerID', 	'$price')";
+  	  $sql_insert = "INSERT INTO auction (work_number, sellerID, consumerName, consumerID, price, finish_date) VALUES ('$work_number', '$sellerID', '$consumerName', '$consumerID', '$price', '$finish_date')";
     	if (mysqli_query($conn, $sql_insert)) {
         
       	  echo json_encode(array("success" => true));
