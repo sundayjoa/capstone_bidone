@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_gravity="bottom"
         app:menu="@menu/navi_menu"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"/>
 
     <FrameLayout
         android:id="@+id/frame_layout"

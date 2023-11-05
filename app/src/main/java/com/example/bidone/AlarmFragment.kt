@@ -1,20 +1,25 @@
 package com.example.bidone
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import okhttp3.*
 import org.json.JSONArray
+import org.json.JSONObject
 import java.io.IOException
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,7 +40,7 @@ class AlarmFragment : Fragment() {
     private lateinit var pt_recyclerView: RecyclerView
     private lateinit var sc_recyclerView: RecyclerView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+  override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -142,9 +147,10 @@ class AlarmFragment : Fragment() {
         pt_recyclerView = view.findViewById(R.id.pt_recyclerView)
         //낙찰 리사이클러뷰
         sc_recyclerView = view.findViewById(R.id.sc_recyclerView)
+
     }
 
-    //북마크 리사이클러뷰 정의
+    //북마크인리사이클러뷰 정의
     fun fetchBoardData(adapter: BoardAdapter) {
 
         val phpUrl = "http://192.168.219.106/my_bookmark.php"
@@ -505,6 +511,10 @@ class AlarmFragment : Fragment() {
             val userNameTextView: TextView = itemView.findViewById(R.id.userName)
             val worknumberTextView: TextView = itemView.findViewById(R.id.worknumber)
 
+            val textViewAlert: TextView = itemView.findViewById(R.id.alertTextView)
+
+
+
             init {
                 itemView.setOnClickListener{
                     showCustomDialog(itemView.context, adapterPosition)
@@ -539,22 +549,125 @@ class AlarmFragment : Fragment() {
 
 
                 customDialog.show()
+
+                //확인 버튼 클릭 리스너
+                val comBtn = customDialog.findViewById<Button>(R.id.combtn)
+
+                comBtn.setOnClickListener(){
+                    val address = customDialog.findViewById<TextView>(R.id.address)
+                    val detail_address = customDialog.findViewById<TextView>(R.id.detail_address)
+
+                    val addressText = address.text.toString()
+                    val detail_addressText = detail_address.text.toString()
+
+                    val comaddress = addressText + " " + detail_addressText
+
+                    val info_sharedPreferences = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+                    val savedUserId = info_sharedPreferences.getString("ID", null) ?: "" // null일 경우 빈 문자열 반환
+                    val savedUserName = info_sharedPreferences.getString("userName", null) ?: ""
+
+                    val worknumberText = selectedItem.worknumber
+                    val sellerIDText = selectedItem.userID
+                    val sellernameText = selectedItem.userName
+                    val price = selectedItem.price
+                    val comaddressText = comaddress
+
+                    val formBody = FormBody.Builder()
+                        .add("worknumber", worknumberText)
+                        .add("sellerID", sellerIDText)
+                        .add("sellerName", sellernameText)
+                        .add("consumerID", savedUserId)
+                        .add("consumerName", savedUserName)
+                        .add("price", price)
+                        .add("comaddress", comaddressText)
+                        .build()
+
+                    val request = Request.Builder()
+                        .url("http://192.168.219.106/payinfo.php")
+                        .post(formBody)
+                        .build()
+
+                    val client = OkHttpClient()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            // Handle the error
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            // Handle the response
+                        }
+                    })
+
+                    customDialog.dismiss()
+
+                }
+
             }
 
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        // 사용자가 해당 정보를 입력했는지 확인
+        private fun checkWorkNumberAndSetBackground(worknumber: String, holder: ViewHolder) {
+            val formBody = FormBody.Builder()
+                .add("work_number", worknumber)
+                .build()
+
+            val request = Request.Builder()
+                .url("http://192.168.219.106/check_pay.php")
+                .post(formBody)
+                .build()
+
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    // 오류 처리
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful) {
+                        // 서버로부터 응답을 받음
+                        val responseBody = response.body?.string()
+                        // 서버 응답을 JSON 객체로 변환
+                        val jsonObject = JSONObject(responseBody)
+                        val exists = jsonObject.getBoolean("exists")
+
+                        // UI 스레드에서 뷰의 배경색을 변경
+                        (holder.itemView.context as Activity).runOnUiThread {
+                            if (!exists) {
+                                // work_number가 테이블에 없으면 배경색을 붉은색으로 설정
+                                holder.itemView.setBackgroundColor(Color.RED)
+                                holder.textViewAlert.visibility = View.VISIBLE
+
+                            } else {
+                                // 존재한다면 원래의 배경색으로 설정
+                                holder.itemView.setBackgroundColor(Color.WHITE) // 원하는 색상으로 변경
+                            }
+                        }
+                    } else {
+                        // 서버 응답에 문제가 있을 경우 처리
+                    }
+                }
+            })
+        }
+
+
+      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_board, parent, false)
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val item = items[position]
+
             // 데이터를 뷰에 바인딩
             holder.titleTextView.text = items[position].title
             holder.simple_explanationTextView.text = items[position].simple_explanation
             holder.uploadDataTextView.text = items[position].uploadData
             holder.userNameTextView.text = items[position].userName
             holder.worknumberTextView.text = items[position].worknumber
+
+            //사용자 입력 확인
+            checkWorkNumberAndSetBackground(item.worknumber, holder)
         }
 
         override fun getItemCount(): Int {

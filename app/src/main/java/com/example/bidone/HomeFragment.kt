@@ -63,33 +63,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        // 홈 fragment -> 공지게시판 버튼 이벤트
-        val requestboardButton: ImageButton = view.findViewById(R.id.noticeButton)
-        requestboardButton.setOnClickListener {
-            activity?.let {
-
-            }
-        }
-
-        // 홈 fragment -> 현재 관심도가 높은 작품 버튼 이벤트
-        val favButton: ImageButton = view.findViewById(R.id.favButton)
-        favButton.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it,FavoriteActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
-
-        // 홈 fragment -> 실시간 경매 작품 버튼 이벤트
-        val rtimeButton: ImageButton = view.findViewById(R.id.rtimeButton)
-        rtimeButton.setOnClickListener {
-            activity?.let {
-                val intent = Intent(it,RealtimeActivity::class.java)
-                it.startActivity(intent)
-            }
-        }
-
         //인기 게시글 리사이클러뷰
         fv_recyclerView = view.findViewById(R.id.fv_recyclerView)
     }

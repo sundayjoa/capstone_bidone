@@ -61,15 +61,6 @@
                         android:layout_height="0dp"
                         android:layout_weight="1" />
 
-                    <ImageButton
-                        android:id="@+id/noticeButton"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:background="@drawable/ic_more"
-                        android:contentDescription="인기 게시글"
-                        />
 
                 </LinearLayout>
 
@@ -116,15 +107,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <ImageButton
-                    android:id="@+id/favButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@drawable/ic_more"
-                    android:contentDescription="실시간 게시글"
-                    />
+
 
             </LinearLayout>
 
@@ -149,7 +132,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -162,8 +145,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
-                    android:text="실시간"
-                    android:textSize="24sp"
+                    android:text="관심 있어 하는 상품이 현재 경매 중이에요!"
+                    android:textSize="18sp"
                     android:textColor="#000000"
                     />
 
@@ -172,15 +155,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <ImageButton
-                    android:id="@+id/rtimeButton"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="15dp"
-                    android:background="@drawable/ic_more"
-                    android:contentDescription="의뢰 게시판"
-                    />
 
             </LinearLayout>
 
