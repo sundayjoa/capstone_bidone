@@ -21,6 +21,9 @@ import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -281,12 +284,31 @@ class AlarmFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val item = items[position]
             // 데이터를 뷰에 바인딩
             holder.titleTextView.text = items[position].title
             holder.simple_explanationTextView.text = items[position].simple_explanation
             holder.uploadDataTextView.text = items[position].uploadData
             holder.userNameTextView.text = items[position].userName
             holder.worknumberTextView.text = items[position].worknumber
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
+
+            // 경매 참가 시간이 지났으면 회색으로 변환
+            val finishDate = try {
+                dateFormat.parse(item.finish)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+                null
+            }
+
+
+            if (finishDate != null && finishDate.before(Date())) {
+                holder.itemView.setBackgroundColor(Color.GRAY)
+            } else {
+                holder.itemView.setBackgroundColor(Color.WHITE)
+            }
+
         }
 
         override fun getItemCount(): Int {
