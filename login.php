@@ -16,7 +16,7 @@
 	$id = $_POST["id"];
 	$password = $_POST["password"];
 
-	$sql = "SELECT * FROM membership WHERE userID = ? AND userPW = ?"; 
+	$sql = "SELECT * FROM membership WHERE BINARY userID = ? AND BINARY userPW = ?"; 
 	$stmt = $conn->prepare($sql);
 
 
