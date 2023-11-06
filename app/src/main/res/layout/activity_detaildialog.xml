@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="5dp"
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="스크롤뷰">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/auctionFrame"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:background="@color/teal_700"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="결제 페이지"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginBottom="3dp"
+                    />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#C2E8E3"
+                app:layout_constraintBottom_toTopOf="@+id/topFrame"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/worknumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="작품 번호"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="게시글 제목 "
+                            android:textColor="#000000"
+                            android:textColorHint="#969696"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/seller_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="판매자:"
+                            android:textColor="#000000"
+                            android:textColorHint="#969696"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/consumer_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="구매자"
+                            android:textColor="#000000"
+                            android:textColorHint="#969696"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="주소"
+                            android:textColor="#000000"
+                            android:textColorHint="#969696"
+                            android:textSize="16sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/address"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:text="주소"
+                                    android:textColor="@color/blue"
+                                    android:textSize="16sp" />
+
+
+                            </LinearLayout>
+
+
+
+                        </LinearLayout>
+
+
+                        <TextView
+                            android:id="@+id/price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="낙찰가:"
+                            android:textColor="#000000"
+                            android:textColorHint="#969696"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="택배사:"
+                            android:textColor="#000000"
+                            android:textColorHint="#969696"
+                            android:textSize="16sp" />
+
+                        <EditText
+                            android:id="@+id/courier"
+                            style="@style/AuthEditText"
+                            android:layout_width="120dp"
+                            android:layout_height="25dp"
+                            android:hint="택배사"
+                            android:textSize="16sp"
+                            android:background="@drawable/background_borderline"/>
+
+
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="송장 번호:"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/invoice_number"
+                        style="@style/AuthEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:hint="운송장 번호 - 없이 입력"
+                        android:textSize="16sp"
+                        android:background="@drawable/background_borderline"/>
+
+                </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/cancelbtn"
+                            android:layout_width="70dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="취소"
+                            android:textColor = "#000000"
+                            android:backgroundTint="#FF6D00"
+                            android:textSize="13sp"
+                            />
+
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:id="@+id/combtn"
+                            android:layout_width="70dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:text="확인"
+                            android:textColor = "@color/purple_500"
+                            android:backgroundTint="@color/gold"
+                            android:textSize="13sp"
+                            />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+            </FrameLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.cardview.widget.CardView>

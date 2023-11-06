@@ -72,6 +72,14 @@ class MyFragment : Fragment() {
         // MySQL 데이터 가져오기 및 리사이클러뷰에 표시
         fetchBoardData(board_adapter)
 
+        //알림 버튼 클릭 리스너
+        val detail_alarm = view.findViewById<ImageButton>(R.id.detail_alarm)
+
+        detail_alarm.setOnClickListener(){
+            val intent = Intent(activity, DetailalarmActivity::class.java)
+            startActivity(intent)
+        }
+
         return view
     }
 

@@ -19,6 +19,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".DetailalarmActivity"
+            android:exported="false" />
+        <activity
+            android:name=".detailAlarm"
+            android:exported="false" />
+        <activity
             android:name=".mainrequestActivity"
             android:exported="false" />
         <activity
