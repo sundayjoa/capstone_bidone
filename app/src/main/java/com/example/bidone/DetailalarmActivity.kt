@@ -162,6 +162,7 @@ class DetailalarmActivity : AppCompatActivity() {
                 val sellername = customDialog.findViewById<TextView>(R.id.seller_name)
                 val consumer_name = customDialog.findViewById<TextView>(R.id.consumer_name)
                 val address = customDialog.findViewById<TextView>(R.id.address)
+                val phone = customDialog.findViewById<TextView>(R.id.phone)
                 val price = customDialog.findViewById<TextView>(R.id.price)
 
                 //데이터 설정
@@ -170,6 +171,7 @@ class DetailalarmActivity : AppCompatActivity() {
                 sellername.text = "판매자: " + userName
                 consumer_name.text = "구매자: " + selectedItem.consumerName
                 address.text = "" + selectedItem.address
+                phone.text = "구매자 전화번호:" + selectedItem.userphone
                 price.text = "낙찰가: " + selectedItem.price
 
                 customDialog.show()
@@ -194,6 +196,11 @@ class DetailalarmActivity : AppCompatActivity() {
                     val work_number = selectedItem.worknumber
                     val courierText = courier.text.toString()
                     val invoiceText = invoice_number.text.toString()
+
+                    // 로그 추가
+                    Log.d("Debug", "work_number: $work_number")
+                    Log.d("Debug", "courier: $courierText")
+                    Log.d("Debug", "invoice_number: $invoiceText")
 
 
                     //정보 저장
