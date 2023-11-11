@@ -15,7 +15,7 @@
 
 	$id = $_POST["id"];
 
-	$sql = "SELECT * FROM membership WHERE userID = '$id'"; 
+	$sql = "SELECT * FROM membership WHERE BINARY userID = '$id'"; 
 	$result = mysqli_query($conn, $sql);
 
 	if (mysqli_num_rows($result) > 0) { 
