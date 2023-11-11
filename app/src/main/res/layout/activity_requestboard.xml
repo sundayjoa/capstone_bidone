@@ -106,16 +106,33 @@
                     android:text="글쓰기"
                     app:layout_constraintTop_toBottomOf="@+id/rchatButton" />
 
-                <ImageView
-                    android:id="@+id/rchatButton"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginEnd="20dp"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom|right"
-                    android:src="@drawable/ic_chat"
-                    app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="20dp">
+
+                    <ImageView
+                        android:id="@+id/rchatButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_chat"/>
+
+                    <TextView
+                        android:id="@+id/total_counter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/rchatButton"
+                        android:layout_toEndOf="@id/rchatButton"
+                        android:background="@drawable/notification_bg"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12sp"
+                        android:padding="4dp"
+                        android:visibility="invisible"
+                        android:text="0" />
+
+                </RelativeLayout>
 
 
             </FrameLayout>
@@ -129,7 +146,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="80dp"
             android:layout_gravity="end"
-            android:background="#96C5C4"
+            android:background="#77AEAD"
             android:orientation="vertical">
 
             <!-- 슬라이드 할 화면 내용 -->
@@ -160,7 +177,7 @@
                     android:layout_marginEnd="20dp"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp"
-                    tools:listitem="@layout/item_notebox"
+                    tools:listitem="@layout/item_request"
                     android:background="@drawable/background_borderline"
                     />
 

@@ -30,6 +30,14 @@ class DetailalarmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailalarm)
 
+        //뒤로가기 버튼 클릭 이벤트
+        val backBtn = findViewById<ImageView>(R.id.bkButton)
+
+        backBtn.setOnClickListener(){
+            finish()
+        }
+
+        //리사이클러뷰 코드
         recyclerView = findViewById(R.id.alarmrecyclerView)
         val boardAdapter = BoardAdapter(emptyList())
         recyclerView.adapter = boardAdapter

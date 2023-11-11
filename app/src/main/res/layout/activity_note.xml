@@ -12,7 +12,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="60dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -21,8 +21,8 @@
 
                 <ImageView
                     android:id="@+id/bkButton"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
                     android:layout_marginStart="10dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_chat_back"
@@ -30,7 +30,7 @@
 
                 <FrameLayout
                     android:layout_width="0dp"
-                    android:layout_height="30dp"
+                    android:layout_height="40dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
@@ -50,8 +50,8 @@
 
                 <ImageView
                     android:id="@+id/sendpt_Button"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:src="@drawable/ic_chat_plus"
@@ -59,8 +59,8 @@
 
                 <ImageView
                     android:id="@+id/find_Button"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
+                    android:layout_width="45dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="10dp"

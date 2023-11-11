@@ -21,6 +21,6 @@ class NoteActivity : AppCompatActivity() {
         val titleText = findViewById<TextView>(R.id.title)
         val title = intent.getStringExtra("title")
 
-        titleText.text = title
+        titleText.text = title + " 에서 온 메시지 입니다."
     }
 }

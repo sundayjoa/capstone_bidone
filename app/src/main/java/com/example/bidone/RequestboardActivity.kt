@@ -358,6 +358,9 @@ class RequestboardActivity : AppCompatActivity() {
                             noteAdapter.clear()
                             noteAdapter.addItems(noteItems)
 
+                            //전체 읽지 않은 알림 갯수
+                            total_unread(noteItems)
+
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -448,6 +451,26 @@ class RequestboardActivity : AppCompatActivity() {
         }
 
     }
+
+    //전체 읽지 않은 알람 갯수
+    private fun total_unread(noteItems: MutableList<NoteItem>) {
+        // 리사이클러뷰의 데이터 업데이트
+        noteAdapter.clear()
+        noteAdapter.addItems(noteItems)
+
+        // 전체 unreadCount 계산
+        val totalUnreadCount = noteItems.sumOf { it.unreadCount }
+
+        // TextView에 전체 unreadCount 표시
+        val totalCounterTextView: TextView = findViewById(R.id.total_counter)
+        if (totalUnreadCount > 0) {
+            totalCounterTextView.text = totalUnreadCount.toString()
+            totalCounterTextView.visibility = View.VISIBLE
+        } else {
+            totalCounterTextView.visibility = View.INVISIBLE
+        }
+    }
+
 
 
 }
