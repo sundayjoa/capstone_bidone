@@ -1,119 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".RequestboardActivity">
 
-    <LinearLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+        <!-- 메인 콘텐츠 -->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/searchText"
-                    android:layout_width="240dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/background_borderline"
-                    android:hint="검색어를 입력하세요."
-                    android:singleLine="false"
-                    android:textColor="#000000"
-                    android:textColorHint="#969696"
-                    android:textSize="18sp"
-                    />
-
-                <ImageButton
-                    android:id="@+id/searchButton"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:contentDescription="키워드 찾기"
-                    app:srcCompat="@android:drawable/ic_menu_search" />
-
-            </LinearLayout>
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:orientation="horizontal">
-
-            <Spinner
-                android:id="@+id/spinner"
-                style="@android:style/Widget.Material.Spinner.Underlined"
-                android:layout_width="150dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="20dp"
-                android:backgroundTint="#00BCD4"
-                android:contentDescription="카테고리 설정"
-                app:layout_constraintTop_toBottomOf="@+id/searchText" />
-
-        </FrameLayout>
-
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefreshLayout"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/searchText"
+                        android:layout_width="240dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/background_borderline"
+                        android:hint="검색어를 입력하세요."
+                        android:singleLine="false"
+                        android:textColor="#000000"
+                        android:textColorHint="#969696"
+                        android:textSize="18sp"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/searchButton"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:contentDescription="키워드 찾기"
+                        app:srcCompat="@android:drawable/ic_menu_search" />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    style="@android:style/Widget.Material.Spinner.Underlined"
+                    android:layout_width="150dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="20dp"
+                    android:backgroundTint="#00BCD4"
+                    android:contentDescription="카테고리 설정"
+                    app:layout_constraintTop_toBottomOf="@+id/searchText" />
+
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="80dp">
+                android:orientation="horizontal">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/requestrecyclerView"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="80dp"
-                    tools:listitem="@layout/item_request"
+                    android:layout_marginBottom="80dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/requestrecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="80dp"
+                        tools:listitem="@layout/item_request"
+                        android:background="@drawable/background_borderline"
+                        />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                <Button
+                    android:id="@+id/rwriteButton"
+                    android:layout_width="130dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="bottom|center"
+                    android:background="@drawable/background_radious"
+                    android:text="글쓰기"
+                    app:layout_constraintTop_toBottomOf="@+id/rchatButton" />
+
+                <ImageView
+                    android:id="@+id/rchatButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_gravity="bottom|right"
+                    android:src="@drawable/ic_chat"
+                    app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <!-- 슬라이드 할 화면 -->
+        <LinearLayout
+            android:id="@+id/slide_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="80dp"
+            android:layout_gravity="end"
+            android:background="#96C5C4"
+            android:orientation="vertical">
+
+            <!-- 슬라이드 할 화면 내용 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="쪽지함"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                />
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/noterecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    tools:listitem="@layout/item_notebox"
                     android:background="@drawable/background_borderline"
                     />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            <Button
-                android:id="@+id/rwriteButton"
-                android:layout_width="130dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_gravity="bottom|center"
-                android:background="@drawable/background_radious"
-                android:text="글쓰기"
-                app:layout_constraintTop_toBottomOf="@+id/rchatButton" />
 
-            <ImageView
-                android:id="@+id/rchatButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_gravity="bottom|right"
-                android:src="@drawable/ic_chat"
-                app:layout_constraintTop_toBottomOf="@+id/searchButton" />
+        </LinearLayout>
 
-
-        </FrameLayout>
-
-    </LinearLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

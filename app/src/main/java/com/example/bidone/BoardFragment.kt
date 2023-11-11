@@ -120,7 +120,7 @@ override fun onCreateView(
     }
 
     // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
-    val phpUrl = "http://192.168.219.106/auctionboard.php"
+    val phpUrl = "http://192.168.219.108/auctionboard.php"
 
     // 2. 데이터를 저장할 모델 클래스 정의
     data class BoardItem(

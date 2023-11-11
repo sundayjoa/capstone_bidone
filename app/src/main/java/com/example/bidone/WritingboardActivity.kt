@@ -177,7 +177,7 @@ class WritingboardActivity : AppCompatActivity() {
 
             //작품 번호 지정해주기
             //ip 주소 현재 ip 주소로 항상 바꾸기
-            val number_url = "http://192.168.219.106/random_number.php"
+            val number_url = "http://192.168.219.108/random_number.php"
 
             val number_queue = Volley.newRequestQueue(this)
             val number_stringRequest = StringRequest(Request.Method.GET, number_url,
@@ -368,7 +368,7 @@ class WritingboardActivity : AppCompatActivity() {
                     //DB에 데이터 전송하기
                     val request = object : StringRequest(
                         //ip 현재 ip 주소로 항상 바꾸기
-                        Method.POST, "http://192.168.219.106/boardinfo.php",
+                        Method.POST, "http://192.168.219.108/boardinfo.php",
                         Response.Listener { response ->
                             //서버에서 전송하는 응답 내용 확인
                             Log.d("Response", response)

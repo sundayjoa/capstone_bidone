@@ -131,7 +131,7 @@ class mainboardActivity : AppCompatActivity() {
 
             //DB에 데이터 전송하기
             val bookmark_request = object : StringRequest(
-                Method.POST, "http://192.168.219.106/bookmark.php",
+                Method.POST, "http://192.168.219.108/bookmark.php",
                 Response.Listener { response ->
                     //서버에서 전송하는 응답 내용 확인
                     Log.d("Response", response)
@@ -225,7 +225,7 @@ class mainboardActivity : AppCompatActivity() {
             val current = view.findViewById<TextView>(R.id.current)
 
 
-            val url = "http://192.168.219.106/main_auction.php"
+            val url = "http://192.168.219.108/main_auction.php"
             val postData = "workNumber=$workNumber"
 
             Thread {
@@ -273,7 +273,7 @@ class mainboardActivity : AppCompatActivity() {
 
                         //DB에 데이터 전송하기
                         val request = object : StringRequest(
-                            Method.POST, "http://192.168.219.106/auction.php",
+                            Method.POST, "http://192.168.219.108/auction.php",
                             Response.Listener { response ->
                                 //서버에서 전송하는 응답 내용 확인
                                 Log.d("Response", response)
@@ -351,7 +351,7 @@ class mainboardActivity : AppCompatActivity() {
         val (userId, _) = getUserInfo(this)
 
         val checkBookmarkRequest = object : StringRequest(
-            Method.POST, "http://192.168.219.106/checkBookmark.php",
+            Method.POST, "http://192.168.219.108/checkBookmark.php",
             Response.Listener { response ->
                 when (response.trim()) {
                     "exists" -> {
@@ -387,7 +387,7 @@ class mainboardActivity : AppCompatActivity() {
         val workNumber = intent.getStringExtra("worknumber").toString()
 
         val count_request = StringRequest(
-            com.android.volley.Request.Method.GET, "http://192.168.219.106/count_bookmark.php?work_number=$workNumber",
+            com.android.volley.Request.Method.GET, "http://192.168.219.108/count_bookmark.php?work_number=$workNumber",
             Response.Listener { response ->
                 val bkmarkView = findViewById<TextView>(R.id.bkmarkView)
                 bkmarkView.text = response

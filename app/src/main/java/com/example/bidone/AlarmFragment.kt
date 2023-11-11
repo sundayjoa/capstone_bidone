@@ -156,7 +156,7 @@ class AlarmFragment : Fragment() {
     //북마크인리사이클러뷰 정의
     fun fetchBoardData(adapter: BoardAdapter) {
 
-        val phpUrl = "http://192.168.219.106/my_bookmark.php"
+        val phpUrl = "http://192.168.219.108/my_bookmark.php"
         val boardItems = mutableListOf<BoardItem>()
         context?.let { safeContext ->
             val sharedPreferences =
@@ -320,7 +320,7 @@ class AlarmFragment : Fragment() {
     //경매 참가 리사이클러뷰
     fun fetchPartData(adapter: PartAdapter) {
 
-        val phpUrl = "http://192.168.219.106/part_board.php"
+        val phpUrl = "http://192.168.219.108/part_board.php"
         val boardItems = mutableListOf<BoardItem>()
         context?.let { safeContext ->
             val sharedPreferences =
@@ -458,7 +458,7 @@ class AlarmFragment : Fragment() {
 
     fun fetchSuccessData(adapter: SuccessAdapter) {
 
-        val phpUrl = "http://192.168.219.106/success_auction.php"
+        val phpUrl = "http://192.168.219.108/success_auction.php"
         val successItems = mutableListOf<SuccessItem>()
         context?.let { safeContext ->
             val sharedPreferences =
@@ -605,7 +605,7 @@ class AlarmFragment : Fragment() {
                         .build()
 
                     val request = Request.Builder()
-                        .url("http://192.168.219.106/payinfo.php")
+                        .url("http://192.168.219.108/payinfo.php")
                         .post(formBody)
                         .build()
 
@@ -635,7 +635,7 @@ class AlarmFragment : Fragment() {
                 .build()
 
             val request = Request.Builder()
-                .url("http://192.168.219.106/check_pay.php")
+                .url("http://192.168.219.108/check_pay.php")
                 .post(formBody)
                 .build()
 

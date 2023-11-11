@@ -1,5 +1,6 @@
 package com.example.bidone
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,13 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.bidone.databinding.ActivityRequestboardBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.*
 import org.json.JSONArray
+import org.json.JSONException
 import java.io.IOException
 
 
@@ -33,6 +41,11 @@ class RequestboardActivity : AppCompatActivity() {
     // 클래스 멤버로 선언
     private lateinit var boardAdapter: BoardAdapter
 
+    //쪽지함 리사이클러뷰 선언
+    private lateinit var note_recyclerView: RecyclerView
+    //쪽지함 어댑터 선언
+    private lateinit var noteAdapter: NoteAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -44,11 +57,6 @@ class RequestboardActivity : AppCompatActivity() {
         // 바인딩 이동  의뢰게시판 -> 글쓰기
         binding.rwriteButton.setOnClickListener {
             val intent = Intent(this, RequestwritingActivity::class.java)
-            startActivity(intent)
-        }
-        // 바인딩 이동 의뢰게시판 -> 채팅
-        binding.rchatButton.setOnClickListener {
-            val intent = Intent(this, RequestchatActivity::class.java)
             startActivity(intent)
         }
 
@@ -79,6 +87,18 @@ class RequestboardActivity : AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {
 
+            }
+        }
+
+        //슬라이드 화면
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        val rchatButton = findViewById<ImageView>(R.id.rchatButton)
+
+        rchatButton.setOnClickListener{
+            if(drawerLayout.isDrawerOpen(GravityCompat.END)){
+                drawerLayout.closeDrawer(GravityCompat.END)
+            } else{
+                drawerLayout.openDrawer(GravityCompat.END)
             }
         }
 
@@ -113,6 +133,16 @@ class RequestboardActivity : AppCompatActivity() {
             reload()
         }
 
+        //쪽지함 리사이클러뷰
+        note_recyclerView = findViewById<RecyclerView>(R.id.noterecyclerView)
+        noteAdapter = NoteAdapter()
+        note_recyclerView.adapter = noteAdapter
+        note_recyclerView.layoutManager = LinearLayoutManager(this)
+
+        fetchNoteFromMySQL()
+
+
+
     }
 
     // 데이터를 저장할 모델 클래스 정의
@@ -129,7 +159,7 @@ class RequestboardActivity : AppCompatActivity() {
 
     //리사이클러뷰 설정
     // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
-    val phpUrl = "http://192.168.219.106/requestboard.php"
+    val phpUrl = "http://192.168.219.108/requestboard.php"
 
     //리사이클러뷰에 Mysql 연동
     private fun fetchDataFromMySQL() {
@@ -256,5 +286,168 @@ class RequestboardActivity : AppCompatActivity() {
             return items.size
         }
     }
+
+    //쪽지함 모델 클래스 정의
+    data class NoteItem(
+        val request_number: String,
+        val title: String,
+        val sender_id: String,
+        val sender_name: String,
+        val receiver_id: String,
+        val receiver_name: String,
+        val content: String,
+        val hope_purchase: String,
+        val send_time: String,
+        val unreadCount: Int
+    )
+
+
+
+    private fun fetchNoteFromMySQL(){
+        val sharedPreferences = this.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("ID", "")
+
+        val noteItems = mutableListOf<NoteItem>()
+        val note_phpUrl = "http://192.168.219.108/noteinfo.php?userId=$userId"
+
+        val request = Request.Builder().url(note_phpUrl).build()
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                // 요청 실패 시 처리할 내용
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val jsonData = response.body?.string()
+
+                if (jsonData != null){
+                    try {
+                        val jsonArray = JSONArray(jsonData)
+                        for (i in 0 until jsonArray.length()) {
+                            val jsonObject = jsonArray.getJSONObject(i)
+
+
+                            val request_number = jsonObject.optString("request_number")
+                            val title = jsonObject.optString("title")
+                            val sender_id = jsonObject.optString("sender_id")
+                            val sender_name = jsonObject.optString("sender_name")
+                            val receiver_id = jsonObject.optString("receiver_id")
+                            val receiver_name = jsonObject.optString("receiver_name")
+                            val content = jsonObject.optString("content")
+                            val hope_purchase = jsonObject.optString("hope_purchase")
+                            val send_time = jsonObject.optString("send_time")
+                            val unreadCount = jsonObject.optInt("unreadCount")
+
+                            noteItems.add(
+                                NoteItem(
+                                    request_number,
+                                    title,
+                                    sender_id,
+                                    sender_name,
+                                    receiver_id,
+                                    receiver_name,
+                                    content,
+                                    hope_purchase,
+                                    send_time,
+                                    unreadCount
+                                )
+                            )
+                        }
+                        this@RequestboardActivity.runOnUiThread {
+                            noteAdapter.clear()
+                            noteAdapter.addItems(noteItems)
+
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        // JSON 파싱 오류 처리
+                    }
+                }
+            }
+        })
+    }
+
+    class NoteAdapter() : RecyclerView.Adapter<NoteAdapter.ViewHolder>(){
+        private val note_items = mutableListOf<NoteItem>()
+
+        //리사이클러뷰 비우기
+        fun clear() {
+            val size = note_items.size
+            note_items.clear()
+            notifyItemRangeRemoved(0, size)
+        }
+
+        // 데이터를 추가하는 메소드 정의
+        fun addItems(newItems: List<NoteItem>) {
+            note_items.addAll(newItems)
+            notifyDataSetChanged() // 데이터가 변경되었음을 알림
+        }
+
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+            View.OnClickListener {
+
+            val sender: TextView = itemView.findViewById(R.id.sender)
+            val sent_time: TextView = itemView.findViewById(R.id.sent_time)
+            val content: TextView = itemView.findViewById(R.id.content)
+
+            //게시글을 누르면 mainboardAcitivity로 이동
+            init {
+                itemView.setOnClickListener(this)
+            }
+
+            override fun onClick(v: View?) {
+                val position = adapterPosition
+                val item = note_items[position]
+
+                val intent = Intent(itemView.context, NoteActivity::class.java)
+
+                //정보 넘겨주기
+                intent.putExtra("request_number", item.request_number)
+                intent.putExtra("title", item.title)
+                intent.putExtra("sender_id", item.sender_id)
+                intent.putExtra("sender_name", item.sender_name)
+                intent.putExtra("receiver_id", item.receiver_id)
+                intent.putExtra("request_name", item.receiver_name)
+                intent.putExtra("content", item.content)
+                intent.putExtra("hope_purchase", item.hope_purchase)
+                intent.putExtra("send_time", item.send_time)
+
+                itemView.context.startActivity(intent)
+            }
+        }
+
+        //리사이클러뷰 viewholder
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_notebox, parent,false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int){
+            holder.sender.text = note_items[position].sender_name
+            holder.sent_time.text = note_items[position].send_time
+            holder.content.text = note_items[position].content
+
+            // 해당 아이템의 읽지 않은 메시지 수
+            val unreadCount = note_items[position].unreadCount
+
+            // 각 아이템 내의 counter TextView 찾기
+            val counterTextView = holder.itemView.findViewById<TextView>(R.id.counter)
+            if (unreadCount > 0) {
+                counterTextView.text = unreadCount.toString()
+                counterTextView.visibility = View.VISIBLE
+            } else {
+                counterTextView.visibility = View.INVISIBLE
+            }
+
+        }
+
+        override fun getItemCount(): Int {
+            return note_items.size
+        }
+
+    }
+
 
 }

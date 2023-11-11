@@ -104,7 +104,7 @@ class MyFragment : Fragment() {
     //내가 쓴 게시글 업데이트
     fun fetchBoardData(adapter: BoardAdapter) {
 
-        val phpUrl = "http://192.168.219.106/my_board.php"
+        val phpUrl = "http://192.168.219.108/my_board.php"
         val boardItems = mutableListOf<BoardItem>()
         context?.let { safeContext ->
             val sharedPreferences =
@@ -286,7 +286,7 @@ class MyFragment : Fragment() {
 
     // 서버와 통신하여 미확인 메시지 수를 가져오는 함수
     private suspend fun fetchUnconfirmedMessagesCount(userId: String): Int {
-        val url = URL("http://192.168.219.106/check_payinfo.php")
+        val url = URL("http://192.168.219.108/check_payinfo.php")
 
         with(url.openConnection() as HttpURLConnection) {
             try {
