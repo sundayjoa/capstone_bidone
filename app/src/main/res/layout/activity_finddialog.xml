@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/auctionFrame"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@color/teal_700"
+            android:layout_width="300dp"
+            android:layout_height="30dp"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="거래 페이지"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="3dp"
+                />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="#C2E8E3"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:text="거래하시겠습니까?"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"/>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:text="거래가:"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center"/>
+
+                    <EditText
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:hint="희망 거래가"
+                        android:textSize="15sp"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/background_borderline"
+                        android:layout_gravity="center"
+                        />
+
+                </LinearLayout>
+
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="거래"
+                    android:layout_gravity="right"
+                    android:textSize="15sp"
+                    android:layout_marginEnd="10dp"
+                    android:backgroundTint="@color/blue"/>
+
+
+            </LinearLayout>
+
+
+
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
