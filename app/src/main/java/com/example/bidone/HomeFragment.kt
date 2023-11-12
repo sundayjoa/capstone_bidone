@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
     //인기 게시글 리사이클러뷰 정의
     fun fetchBoardData(adapter: BoardAdapter) {
 
-        val phpUrl = "http://192.168.219.108/popular_board.php"
+        val phpUrl = "http://192.168.219.106/popular_board.php"
         val boardItems = mutableListOf<BoardItem>()
 
         // MySQL 데이터 가져오기

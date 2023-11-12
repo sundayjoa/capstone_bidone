@@ -48,7 +48,7 @@ class DetailalarmActivity : AppCompatActivity() {
 
     fun fetchBoardData(adapter: BoardAdapter) {
 
-        val phpUrl = "http://192.168.219.108/alarm_pay.php"
+        val phpUrl = "http://192.168.219.106/alarm_pay.php"
         val boardItems = mutableListOf<BoardItem>()
         this.let { safeContext ->
             val sharedPreferences =
@@ -225,7 +225,7 @@ class DetailalarmActivity : AppCompatActivity() {
                             .build()
 
                         val request = Request.Builder()
-                            .url("http://192.168.219.108/payinfo_update.php")
+                            .url("http://192.168.219.106/payinfo_update.php")
                             .post(formBody)
                             .build()
 

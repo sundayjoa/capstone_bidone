@@ -127,7 +127,7 @@ class mainrequestActivity : AppCompatActivity() {
 
                         //DB에 데이터 전송하기
                         val request = object : StringRequest(
-                            Request.Method.POST, "http://192.168.219.108/request_note.php",
+                            Request.Method.POST, "http://192.168.219.106/request_note.php",
                             Response.Listener { response ->
                                 //서버에서 전송하는 응답 내용 확인
                                 Log.d("Response", response)

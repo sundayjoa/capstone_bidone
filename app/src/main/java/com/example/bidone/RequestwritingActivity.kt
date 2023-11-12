@@ -54,7 +54,7 @@ class RequestwritingActivity : AppCompatActivity() {
             }
 
             //의뢰 번호 지정해주기
-            val number_url = "http://192.168.219.108/request_number.php"
+            val number_url = "http://192.168.219.106/request_number.php"
 
             val number_queue = Volley.newRequestQueue(this)
             val number_stringRequest = StringRequest(
@@ -94,7 +94,7 @@ class RequestwritingActivity : AppCompatActivity() {
                 //DB에 데이터 전송하기
                 val request = object : StringRequest(
                     //ip 현재 ip 주소로 항상 바꾸기
-                    Method.POST, "http://192.168.219.108/requestinfo.php",
+                    Method.POST, "http://192.168.219.106/requestinfo.php",
                     Response.Listener { response ->
                         //서버에서 전송하는 응답 내용 확인
                         Log.d("Response", response)

@@ -159,7 +159,7 @@ class RequestboardActivity : AppCompatActivity() {
 
     //리사이클러뷰 설정
     // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
-    val phpUrl = "http://192.168.219.108/requestboard.php"
+    val phpUrl = "http://192.168.219.106/requestboard.php"
 
     //리사이클러뷰에 Mysql 연동
     private fun fetchDataFromMySQL() {
@@ -308,7 +308,7 @@ class RequestboardActivity : AppCompatActivity() {
         val userId = sharedPreferences.getString("ID", "")
 
         val noteItems = mutableListOf<NoteItem>()
-        val note_phpUrl = "http://192.168.219.108/noteinfo.php?userId=$userId"
+        val note_phpUrl = "http://192.168.219.106/noteinfo.php?userId=$userId"
 
         val request = Request.Builder().url(note_phpUrl).build()
         val client = OkHttpClient()
@@ -405,6 +405,15 @@ class RequestboardActivity : AppCompatActivity() {
 
                 val intent = Intent(itemView.context, NoteActivity::class.java)
 
+                // 사용자 ID 가져오기
+                val sharedPreferences = itemView.context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+                val userId = sharedPreferences.getString("ID", "")
+
+                // 사용자 ID 확인 후 서버에 업데이트 요청
+                if (item.receiver_id == userId) {
+                    updateReceiverReact(item.request_number, userId!!,item.sender_id)
+                }
+
                 //정보 넘겨주기
                 intent.putExtra("request_number", item.request_number)
                 intent.putExtra("title", item.title)
@@ -420,6 +429,29 @@ class RequestboardActivity : AppCompatActivity() {
             }
         }
 
+        // receiver_react를 업데이트하는 함수
+        private fun updateReceiverReact(requestNumber: String, receiverId: String, senderId: String) {
+            val updateUrl =
+                "http://192.168.219.106/receiver_react.php?requestNumber=$requestNumber&receiverId=$receiverId&senderId=$senderId"
+
+            val request = Request.Builder().url(updateUrl).build()
+            val client = OkHttpClient()
+
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    // 요청 실패 시 처리할 내용
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    if (response.isSuccessful) {
+                        // 성공적으로 업데이트 되었을 때 처리할 내용
+                    } else {
+                        // 서버에서 오류 응답을 받았을 때 처리할 내용
+                    }
+                }
+            })
+        }
+
         //리사이클러뷰 viewholder
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view =
@@ -428,7 +460,16 @@ class RequestboardActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int){
-            holder.sender.text = note_items[position].sender_name
+            // 현재 사용자 ID 가져오기
+            val sharedPreferences = holder.itemView.context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+            val userId = sharedPreferences.getString("ID", "")
+
+            // 현재 사용자가 sender인 경우 receiver_name을 표시하고, 그렇지 않으면 sender_name을 표시
+            if (note_items[position].sender_id == userId) {
+                holder.sender.text = note_items[position].receiver_name
+            } else {
+                holder.sender.text = note_items[position].sender_name
+            }
             holder.sent_time.text = note_items[position].send_time
             holder.content.text = note_items[position].content
 
@@ -470,7 +511,6 @@ class RequestboardActivity : AppCompatActivity() {
             totalCounterTextView.visibility = View.INVISIBLE
         }
     }
-
 
 
 }
