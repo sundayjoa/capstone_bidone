@@ -14,7 +14,7 @@
 
     $found = false;
     while (!$found) {
-        $number = rand(1000000000, 9999999999);
+        $number = rand(10000000, 99999999);
         $sql = "SELECT * FROM request WHERE request_number=$number";
 	$result = $conn->query($sql);
         if ($result->num_rows == 0) {
