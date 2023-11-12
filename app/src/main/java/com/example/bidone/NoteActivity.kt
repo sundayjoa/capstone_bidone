@@ -69,6 +69,32 @@ class NoteActivity : AppCompatActivity() {
             finish()
         }
 
+        //거래하기 버튼
+        val findBtn = findViewById<ImageView>(R.id.find_Button)
+        findBtn.setOnClickListener(){
+
+            val builder = AlertDialog.Builder(this)
+
+            // LayoutInflater 객체 생성
+            val inflater = layoutInflater
+
+            // 팝업창에 표시할 뷰 지정
+            val view = inflater.inflate(R.layout.activity_finddialog, null)
+            builder.setView(view)
+
+            // AlertDialog 객체 생성 및 표시
+            val alertDialog = builder.create()
+            alertDialog.show()
+
+            val hopePurchaseEditText = findViewById<EditText>(R.id.hope_purchase)
+            val hope = intent.getStringExtra("hope_purchase") ?: ""
+
+            hopePurchaseEditText.setText(hope)
+
+
+
+        }
+
         //title 넘겨받기
         val titleText = findViewById<TextView>(R.id.title)
         val title = intent.getStringExtra("title")
@@ -104,7 +130,7 @@ class NoteActivity : AppCompatActivity() {
                 alertDialog.dismiss()
             }
 
-//확인 버튼 이벤트
+            //확인 버튼 이벤트
             val comBtn = view.findViewById<Button>(R.id.combtn)
 
 

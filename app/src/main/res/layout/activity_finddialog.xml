@@ -73,6 +73,7 @@
                         android:layout_gravity="center"/>
 
                     <EditText
+                        android:id="@+id/hope_purchase"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:hint="희망 거래가"
