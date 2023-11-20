@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.FormBody
 import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONException
@@ -41,6 +42,10 @@ class NoteActivity : AppCompatActivity() {
     private var senderId: String? = null
     private var receiverId: String? = null
 
+    //거래요청 어댑터
+    private lateinit var note_recyclerView: RecyclerView
+    private lateinit var noteAdapter: NoteAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note)
@@ -59,6 +64,15 @@ class NoteActivity : AppCompatActivity() {
 
         // MySQL 데이터 가져오기 및 리사이클러뷰에 표시
         fetchDataFromMySQL()
+
+        //거래요청 리사이클러뷰 코드
+        note_recyclerView = findViewById<RecyclerView>(R.id.findrecyclerView)
+        noteAdapter = NoteAdapter()
+        note_recyclerView.adapter = noteAdapter
+        note_recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        //거래요청
+        fetchPayInfo()
 
 
         //뒤로 가기 버튼
@@ -406,18 +420,204 @@ class NoteActivity : AppCompatActivity() {
     }
 
     //거래 요청 리사이클러뷰
-    val Url = "http://192.168.219.106/note_content.php"
+    val Url = "http://192.168.219.106/request_find.php"
 
-    data class FindItem(
-        val work_number: String,
+    data class NoteItem(
         val sellerID: String,
         val sellerName: String,
+        val price: String,
         val consumerID: String,
         val consumerName: String,
-        val price: String,
         val address: String,
-        val invoice_number: String,
+        val workNumber: String,
+        val title: String
     )
+
+    //리사이클러뷰에 Mysql 연동
+    private fun fetchPayInfo() {
+
+
+        // MySQL 데이터 가져오기
+        // (네트워크 요청 등을 위해 별도의 스레드에서 실행)
+        val noteItems = mutableListOf<NoteItem>()
+        val requestNumber = intent.getStringExtra("request_number").toString()
+
+        val workNumber = intent.getStringExtra("request_number").toString()
+        val title = intent.getStringExtra("title").toString()
+
+        //requestNumber 넘겨주기
+        val requestBody = FormBody.Builder()
+            .add("request_number", requestNumber)
+            .build()
+
+        val request = okhttp3.Request.Builder()
+            .url(Url)
+            .post(requestBody)
+            .build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                // 요청 실패 시 처리할 내용
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+                val jsonData = response.body?.string()
+                Log.d("NoteActivity", "Request number: $requestNumber")
+                Log.d("NoteActivity", "Response received: $jsonData")
+
+                // JSON 데이터 파싱
+                // jsonData가 null이 아닌 경우에만 JSONArray 생성
+                if (jsonData != null) {
+                    try {
+
+                        val jsonArray = JSONArray(jsonData)
+                        for (i in 0 until jsonArray.length()) {
+                            val jsonObject = jsonArray.getJSONObject(i)
+                            // 키의 존재 여부와 값의 null 여부를 체크
+                            val sellerID = jsonObject.optString("sellerID")
+                            val sellerName = jsonObject.optString("sellerName")
+                            val price = jsonObject.optString("price")
+                            val consumerID = jsonObject.optString("consumerID")
+                            val consumerName = jsonObject.optString("consumerName")
+                            val address = jsonObject.optString("address")
+
+
+                            noteItems.add(
+                                NoteItem(
+                                    sellerID, sellerName, price, consumerID, consumerName, address, workNumber, title
+                                )
+                            )
+                        }
+
+                        this@NoteActivity.runOnUiThread { // activity?. 대신에 this@MainActivity를 사용
+                            noteAdapter.clear()
+                            // 리사이클러뷰에 데이터 추가하기
+                            noteAdapter.addItems(noteItems)
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        // JSON 파싱 오류 처리
+                    }
+                }
+            }
+        })
+    }
+
+    class NoteAdapter() : RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+
+        // 데이터를 저장할 리스트 선언
+        private val items = mutableListOf<NoteItem>()
+
+        //리사이클러뷰 비우기
+        fun clear() {
+            val size = items.size
+            items.clear()
+            notifyItemRangeRemoved(0, size)
+        }
+
+        // 데이터를 추가하는 메소드 정의
+        fun addItems(newItems: List<NoteItem>) {
+            items.addAll(newItems)
+            notifyDataSetChanged() // 데이터가 변경되었음을 알림
+        }
+
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+            View.OnClickListener {
+            // item_board.xml에서 정의한 뷰들과 매칭되는 변수들 선언
+            val seller: TextView = itemView.findViewById(R.id.seller)
+            val request: TextView = itemView.findViewById(R.id.request)
+            val content: TextView = itemView.findViewById(R.id.content)
+            val findBtn: TextView = itemView.findViewById(R.id.Findbutton)
+
+
+            //게시글을 누르면 mainboardAcitivity로 이동
+            init {
+
+            }
+
+            override fun onClick(v: View?) {
+
+            }
+
+
+        }
+
+        //리사이클러뷰 viewholder
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view =
+                LayoutInflater.from(parent.context).inflate(R.layout.item_payrequest, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
+            val item = items[position]
+            val (userId, userName) = getUserInfo(holder.itemView.context)
+
+            if (item.consumerID.isNullOrEmpty() || item.consumerName.isNullOrEmpty() || item.address.isNullOrEmpty()) {
+                holder.seller.text = "거래자: " + item.sellerName
+                holder.request.text = "거래 요청"
+                holder.content.text = "거래를 진행해주세요."
+                holder.findBtn.text = "거래"
+
+                holder.findBtn.setOnClickListener {
+
+                    val context = holder.itemView.context
+                    val builder = AlertDialog.Builder(context)
+
+                    // LayoutInflater 객체 생성
+                    val inflater = LayoutInflater.from(context)
+
+                    // 팝업창에 표시할 뷰 지정
+                    val view = inflater.inflate(R.layout.activity_successdialog, null)
+                    builder.setView(view)
+
+                    // AlertDialog 객체 생성 및 표시
+                    val alertDialog = builder.create()
+                    alertDialog.show()
+
+                    // textview 설정
+                    val workNumberTextView = view.findViewById<TextView>(R.id.worknumber)
+                    workNumberTextView?.text = "작품 번호: " + item.workNumber
+
+                    val titleText = view.findViewById<TextView>(R.id.title)
+                    titleText?.text = item.title
+
+                    val sellername = view.findViewById<TextView>(R.id.seller_name)
+                    sellername?.text = "판매자: " + item.sellerName
+
+                    val nameText = view.findViewById<TextView>(R.id.name)
+                    nameText?.text = "구매자: " + userName
+
+                    val priceText = view.findViewById<TextView>(R.id.price)
+                    priceText?.text = "가격: " + item.price
+
+                }
+
+            } else {
+                holder.seller.text = "거래자: " + item.sellerName
+                holder.request.text = "거래 완료"
+                holder.content.text = "거래가 완료되었습니다."
+                holder.findBtn.text = "확인"
+            }
+
+            // 현재 사용자의 ID와 판매자의 ID가 같으면 버튼 비활성화
+            if (item.sellerID == userId) {
+                holder.findBtn.isEnabled = false
+                holder.findBtn.alpha = 0.8f // 버튼을 흐리게 표시 (선택적)
+            } else {
+                holder.findBtn.isEnabled = true
+                holder.findBtn.alpha = 1.0f
+            }
+
+        }
+
+        override fun getItemCount(): Int {
+            return items.size
+        }
+    }
+
 
 
     fun getUserInfo(context: Context): Pair<String?, String?> {
