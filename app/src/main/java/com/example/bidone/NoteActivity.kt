@@ -3,14 +3,12 @@ package com.example.bidone
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +21,7 @@ import okhttp3.Callback
 import okhttp3.OkHttpClient
 import org.json.JSONArray
 import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -86,12 +85,62 @@ class NoteActivity : AppCompatActivity() {
             val alertDialog = builder.create()
             alertDialog.show()
 
-            val hopePurchaseEditText = findViewById<EditText>(R.id.hope_purchase)
+            val hopePurchaseEditText = view.findViewById<EditText>(R.id.hope_purchase)
             val hope = intent.getStringExtra("hope_purchase") ?: ""
 
             hopePurchaseEditText.setText(hope)
 
+            val findBtn = view.findViewById<Button>(R.id.Findbutton)
 
+            findBtn.setOnClickListener(){
+
+                val hope = view.findViewById<TextView>(R.id.hope_purchase)
+
+                val request_number = intent.getStringExtra("request_number").toString()
+                val (userId, userName) = getUserInfo(this)
+                val hope_purchase = hope.text.toString()
+
+                val request = object : StringRequest(
+                    //ip 현재 ip 주소로 항상 바꾸기
+                    Method.POST, "http://192.168.219.106/note_pay.php",
+                    Response.Listener { response ->
+                        //서버에서 전송하는 응답 내용 확인
+                        Log.d("Response", response)
+                        Log.d("JSON Data", response)
+
+                    },
+                    Response.ErrorListener { error ->
+                        Toast.makeText(
+                            this,
+                            "An error occurred: ${error.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                ) {
+                    //서버에 정보 넘겨주기
+                    override fun getParams(): MutableMap<String, String>? {
+                        val params = HashMap<String, String>()
+
+                        params["request_number"] = request_number
+                        userId?.let {
+                            params["sellerID"] = it
+                        }
+
+                        userName?.let {
+                            params["sellerName"] = it
+                        }
+                        params["hope_purchase"] = hope_purchase
+
+                        return params
+                    }
+                }
+
+                val queue = Volley.newRequestQueue(this)
+                queue.add(request)
+
+                //팝업 창 닫기
+                alertDialog.dismiss()
+            }
 
         }
 
@@ -122,6 +171,7 @@ class NoteActivity : AppCompatActivity() {
             val request_numberinfo = intent.getStringExtra("request_number")
 
             request_numberText.text = request_numberinfo
+
 
             //취소 버튼 이벤트
             val cancelBtn = view.findViewById<Button>(R.id.cbtn)
@@ -354,6 +404,20 @@ class NoteActivity : AppCompatActivity() {
             return items.size
         }
     }
+
+    //거래 요청 리사이클러뷰
+    val Url = "http://192.168.219.106/note_content.php"
+
+    data class FindItem(
+        val work_number: String,
+        val sellerID: String,
+        val sellerName: String,
+        val consumerID: String,
+        val consumerName: String,
+        val price: String,
+        val address: String,
+        val invoice_number: String,
+    )
 
 
     fun getUserInfo(context: Context): Pair<String?, String?> {
