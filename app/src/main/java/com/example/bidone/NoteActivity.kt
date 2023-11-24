@@ -593,6 +593,57 @@ class NoteActivity : AppCompatActivity() {
                     val priceText = view.findViewById<TextView>(R.id.price)
                     priceText?.text = "가격: " + item.price
 
+                    //확인 버튼 클릭 이벤트
+                    val comBtn = view.findViewById<Button>(R.id.combtn)
+                    val address = view.findViewById<TextView>(R.id.address)
+                    val detail_address = view.findViewById<TextView>(R.id.detail_address)
+
+                    comBtn.setOnClickListener(){
+
+                        //주소를 입력하지 않으면 수행하지 않기
+                        val addressText = address.text.toString()
+                        val detail_addressText = detail_address.text.toString()
+
+                        val comaddress = addressText + " " + detail_addressText
+
+                        //작품번호
+                        val worknumber = item.workNumber
+
+                        if(addressText.isEmpty()){
+                            Toast.makeText(context, "주소를 입력해주세요!", Toast.LENGTH_SHORT).show()
+                        } //결제정보(payinfo) 업데이트
+                        else{
+                            val formBody = FormBody.Builder()
+                                .add("work_number", worknumber)
+                                .apply {
+                                    userId?.let { add("consumerID", it) }
+                                    userName?.let { add("consumerName", it) }
+                                }
+                                .add("address", comaddress)
+                                .build()
+
+                            val request =okhttp3.Request.Builder()
+                                .url("http://192.168.219.106/note_payinfo_update.php")
+                                .post(formBody)
+                                .build()
+
+                            val client = OkHttpClient()
+                            client.newCall(request).enqueue(object : Callback {
+                                override fun onFailure(call: Call, e: IOException) {
+                                    // Handle the error
+                                }
+
+                                override fun onResponse(call: Call, response: okhttp3.Response) {
+                                    // Handle the response
+                                }
+                            })
+
+                            alertDialog.dismiss()
+
+                        }
+
+                    }
+
                 }
 
             } else {
