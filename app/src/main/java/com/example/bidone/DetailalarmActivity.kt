@@ -79,6 +79,7 @@ class DetailalarmActivity : AppCompatActivity() {
 
                 override fun onResponse(call: Call, response: Response) {
                     val jsonData = response.body?.string()
+                    Log.d("NoteActivity", "Response received: $jsonData")
 
                     if (jsonData.isNullOrEmpty()) {
                         Log.e("HTTP_ERROR", "Empty response.")
@@ -96,6 +97,8 @@ class DetailalarmActivity : AppCompatActivity() {
                             val address = jsonObject.getString("address")
                             val title = jsonObject.getString("title")
                             val worknumber = jsonObject.getString("work_number")
+                            val courier = jsonObject.getString("courier")
+                            val invoice_number = jsonObject.getString("invoice_number")
 
                             boardItems.add(
                                 BoardItem(
@@ -106,7 +109,9 @@ class DetailalarmActivity : AppCompatActivity() {
                                     consumerID,
                                     userphone,
                                     address,
-                                    userId
+                                    userId,
+                                    courier,
+                                    invoice_number
                                 )
                             )
                         }
@@ -132,16 +137,19 @@ class DetailalarmActivity : AppCompatActivity() {
         val consumerID: String,
         val userphone: String,
         val address: String,
-        val userID: String
+        val userID: String,
+        val courier: String,
+        val invoice_number: String
     )
 
     class BoardAdapter(private val items: List<BoardItem>) : RecyclerView.Adapter<BoardAdapter.ViewHolder>() {
 
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-            // item_board.xml에서 정의한 뷰들과 매칭되는 변수들 선언
+
             val titleTextView: TextView = itemView.findViewById(R.id.title)
             val priceTextView: TextView = itemView.findViewById(R.id.priceText)
             val consumerTextView: TextView = itemView.findViewById(R.id.consumer)
+            val textViewAlert: TextView = itemView.findViewById(R.id.alertTextView)
 
             //클릭 시 다이얼로그
             init {
@@ -271,6 +279,16 @@ class DetailalarmActivity : AppCompatActivity() {
             holder.titleTextView.text = items[position].title
             holder.priceTextView.text = items[position].price
             holder.consumerTextView.text = items[position].consumerName
+
+            //운송정보 입력 확인
+            if (item.courier.isNullOrBlank() || item.courier == "null" ||
+                item.invoice_number.isNullOrBlank() || item.invoice_number == "null") {
+
+                holder.itemView.setBackgroundColor(Color.RED)
+                holder.textViewAlert.visibility = View.VISIBLE
+            } else{
+                holder.textViewAlert.visibility = View.GONE
+            }
 
         }
 

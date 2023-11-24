@@ -466,6 +466,7 @@ class NoteActivity : AppCompatActivity() {
                 Log.d("NoteActivity", "Request number: $requestNumber")
                 Log.d("NoteActivity", "Response received: $jsonData")
 
+
                 // JSON 데이터 파싱
                 // jsonData가 null이 아닌 경우에만 JSONArray 생성
                 if (jsonData != null) {
@@ -555,7 +556,12 @@ class NoteActivity : AppCompatActivity() {
             val item = items[position]
             val (userId, userName) = getUserInfo(holder.itemView.context)
 
-            if (item.consumerID.isNullOrEmpty() || item.consumerName.isNullOrEmpty() || item.address.isNullOrEmpty()) {
+            if (item.consumerID.isNullOrBlank() || item.consumerID == "null" ||
+                item.consumerName.isNullOrBlank() || item.consumerName == "null" ||
+                item.address.isNullOrBlank() || item.address == "null") {
+
+                Log.d("Debug", "Condition met for in-progress trade")
+
                 holder.seller.text = "거래자: " + item.sellerName
                 holder.request.text = "거래 요청"
                 holder.content.text = "거래를 진행해주세요."
@@ -647,6 +653,8 @@ class NoteActivity : AppCompatActivity() {
                 }
 
             } else {
+                Log.d("Debug", "Condition met for completed trade")
+
                 holder.seller.text = "거래자: " + item.sellerName
                 holder.request.text = "거래 완료"
                 holder.content.text = "거래가 완료되었습니다."
