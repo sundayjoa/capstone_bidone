@@ -12,7 +12,7 @@
 	$userID = $_POST['userID'];
 
 
-	$sql = "SELECT p.work_number, p.consumerID, p.consumerName, p.price, p.address, 
+	$sql = "SELECT p.work_number, p.consumerID, p.consumerName, p.price, p.address, p.courier, p.invoice_number,
                    IF(CHAR_LENGTH(p.work_number) = 8, r.title, b.title) AS title, 
                    m.userphone
             FROM payinfo p

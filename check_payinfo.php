@@ -21,9 +21,8 @@ $userID = $_POST['userID'];
 
 $sql = "SELECT COUNT(*) as count
         FROM payinfo
-        WHERE work_number IN (
-            SELECT work_number FROM board WHERE userID = ?
-        ) AND (courier IS NULL OR invoice_number IS NULL)";
+        WHERE sellerID = ?
+        AND (courier IS NULL OR invoice_number IS NULL)";
 
 // Prepared statement 준비
 if ($stmt = $conn->prepare($sql)) {
