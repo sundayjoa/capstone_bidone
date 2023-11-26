@@ -116,7 +116,7 @@ class NoteActivity : AppCompatActivity() {
 
                 val request = object : StringRequest(
                     //ip 현재 ip 주소로 항상 바꾸기
-                    Method.POST, "http://192.168.219.106/note_pay.php",
+                    Method.POST, "http://192.168.219.108/note_pay.php",
                     Response.Listener { response ->
                         //서버에서 전송하는 응답 내용 확인
                         Log.d("Response", response)
@@ -225,7 +225,7 @@ class NoteActivity : AppCompatActivity() {
 
                         //DB에 데이터 전송하기
                         val request = object : StringRequest(
-                            Request.Method.POST, "http://192.168.219.106/request_note.php",
+                            Request.Method.POST, "http://192.168.219.108/request_note.php",
                             Response.Listener { response ->
                                 //서버에서 전송하는 응답 내용 확인
                                 Log.d("Response", response)
@@ -279,7 +279,7 @@ class NoteActivity : AppCompatActivity() {
 
     //리사이클러뷰 설정
     // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
-    val phpUrl = "http://192.168.219.106/note_content.php"
+    val phpUrl = "http://192.168.219.108/note_content.php"
 
     data class BoardItem(
         val title: String,
@@ -420,7 +420,7 @@ class NoteActivity : AppCompatActivity() {
     }
 
     //거래 요청 리사이클러뷰
-    val Url = "http://192.168.219.106/request_find.php"
+    val Url = "http://192.168.219.108/request_find.php"
 
     data class NoteItem(
         val sellerID: String,
@@ -629,7 +629,7 @@ class NoteActivity : AppCompatActivity() {
                                 .build()
 
                             val request =okhttp3.Request.Builder()
-                                .url("http://192.168.219.106/note_payinfo_update.php")
+                                .url("http://192.168.219.108/note_payinfo_update.php")
                                 .post(formBody)
                                 .build()
 

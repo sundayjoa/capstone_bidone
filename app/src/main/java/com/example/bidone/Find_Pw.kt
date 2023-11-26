@@ -40,7 +40,7 @@ class Find_Pw : AppCompatActivity() {
             //DB에 데이터 전송하기
             val request = object : StringRequest(
                 //ip 현재 ip 주소로 항상 바꾸기
-                Method.POST, "http://192.168.219.106/find_pw.php",
+                Method.POST, "http://192.168.219.108/find_pw.php",
                 com.android.volley.Response.Listener { response ->
                     //서버에서 전송하는 응답 내용 확인
                     Log.d("Response", response)

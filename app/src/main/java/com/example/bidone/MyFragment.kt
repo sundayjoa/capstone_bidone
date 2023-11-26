@@ -3,8 +3,10 @@ package com.example.bidone
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -85,7 +87,7 @@ class MyFragment : Fragment() {
                 .build()
 
             val request = Request.Builder()
-                .url("http://192.168.219.106/name_update.php")
+                .url("http://192.168.219.108/name_update.php")
                 .post(formBody)
                 .build()
 
@@ -148,7 +150,7 @@ class MyFragment : Fragment() {
     //내가 쓴 게시글 업데이트
     fun fetchBoardData(adapter: BoardAdapter) {
 
-        val phpUrl = "http://192.168.219.106/my_board.php"
+        val phpUrl = "http://192.168.219.108/my_board.php"
         val boardItems = mutableListOf<BoardItem>()
         context?.let { safeContext ->
             val sharedPreferences =
@@ -193,11 +195,12 @@ class MyFragment : Fragment() {
                             val time = jsonObject.getString("time")
                             val finish = jsonObject.getString("finish_date")
                             val userID = jsonObject.getString("userID")
+                            val thumbnail = jsonObject.getString("thumbnail")
 
                             boardItems.add(
                                 BoardItem(
                                     title, simple_explanation, upload_date, userName, worknumber,
-                                    detail_explanation, start, increase, date, time, finish, userID
+                                    detail_explanation, start, increase, date, time, finish, userID, thumbnail
                                 )
                             )
 
@@ -230,7 +233,8 @@ class MyFragment : Fragment() {
         val date: String,
         val time: String,
         val finish: String,
-        val userID: String
+        val userID: String,
+        val thumbnail: String,
     )
 
     class BoardAdapter(private val items: List<BoardItem>) : RecyclerView.Adapter<BoardAdapter.ViewHolder>() {
@@ -243,6 +247,7 @@ class MyFragment : Fragment() {
             val uploadDataTextView: TextView = itemView.findViewById(R.id.time)
             val userNameTextView: TextView = itemView.findViewById(R.id.userName)
             val worknumberTextView: TextView = itemView.findViewById(R.id.worknumber)
+            val thumbnailImageView: ImageView = itemView.findViewById(R.id.thumbnail)
 
             //게시글을 누르면 mainboardAcitivity로 이동
             init {
@@ -282,6 +287,12 @@ class MyFragment : Fragment() {
             holder.uploadDataTextView.text = items[position].uploadData
             holder.userNameTextView.text = items[position].userName
             holder.worknumberTextView.text = items[position].worknumber
+
+            //썸네일
+            val imageBase64 = items[position].thumbnail
+            val decodedByte = Base64.decode(imageBase64, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+            holder.thumbnailImageView.setImageBitmap(bitmap)
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
 
@@ -330,7 +341,7 @@ class MyFragment : Fragment() {
 
     // 서버와 통신하여 미확인 메시지 수를 가져오는 함수
     private suspend fun fetchUnconfirmedMessagesCount(userId: String): Int {
-        val url = URL("http://192.168.219.106/check_payinfo.php")
+        val url = URL("http://192.168.219.108/check_payinfo.php")
 
         with(url.openConnection() as HttpURLConnection) {
             try {

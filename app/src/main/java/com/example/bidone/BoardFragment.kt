@@ -120,7 +120,7 @@ override fun onCreateView(
     }
 
     // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
-    val phpUrl = "http://192.168.219.106/auctionboard.php"
+    val phpUrl = "http://192.168.219.108/auctionboard.php"
 
     // 2. 데이터를 저장할 모델 클래스 정의
     data class BoardItem(
@@ -128,6 +128,7 @@ override fun onCreateView(
         val simple_explanation: String,
         val uploadData: String,
         val userName: String,
+        val thumbnail: String,
         val worknumber: String,
         val detailExplanation: String,
         val start: String,
@@ -166,6 +167,7 @@ override fun onCreateView(
                         val simple_explanation = jsonObject.getString("simple_explanation")
                         val upload_date = jsonObject.getString("upload_date")
                         val userName = jsonObject.getString("userName")
+                        val thumbnail = jsonObject.getString("thumbnail")
                         val worknumber = jsonObject.getString("work_number")
                         val detail_explanation = jsonObject.getString("detail_explanation")
                         val start = jsonObject.getString("start")
@@ -175,7 +177,7 @@ override fun onCreateView(
                         val finish = jsonObject.getString("finish_date")
                         val userID = jsonObject.getString("userID")
 
-                        boardItems.add(BoardItem(title, simple_explanation, upload_date, userName, worknumber,
+                        boardItems.add(BoardItem(title, simple_explanation, upload_date, userName, thumbnail, worknumber,
                             detail_explanation, start, increase, date, time, finish, userID))
                     }
 
@@ -201,6 +203,7 @@ override fun onCreateView(
             val uploadDataTextView: TextView = itemView.findViewById(R.id.time)
             val userNameTextView: TextView = itemView.findViewById(R.id.userName)
             val worknumberTextView: TextView = itemView.findViewById(R.id.worknumber)
+            val thumbnailImageView: ImageView = itemView.findViewById(R.id.thumbnail)
 
             //게시글을 누르면 mainboardAcitivity로 이동
             init {
@@ -243,6 +246,12 @@ override fun onCreateView(
             holder.uploadDataTextView.text = items[position].uploadData
             holder.userNameTextView.text = items[position].userName
             holder.worknumberTextView.text = items[position].worknumber
+
+            //썸네일
+            val imageBase64 = items[position].thumbnail
+            val decodedByte = Base64.decode(imageBase64, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+            holder.thumbnailImageView.setImageBitmap(bitmap)
         }
 
         override fun getItemCount(): Int {

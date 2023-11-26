@@ -159,7 +159,7 @@ class RequestboardActivity : AppCompatActivity() {
 
     //리사이클러뷰 설정
     // 1. MySQL 데이터를 가져오기 위한 PHP 파일의 URL
-    val phpUrl = "http://192.168.219.106/requestboard.php"
+    val phpUrl = "http://192.168.219.108/requestboard.php"
 
     //리사이클러뷰에 Mysql 연동
     private fun fetchDataFromMySQL() {
@@ -308,7 +308,7 @@ class RequestboardActivity : AppCompatActivity() {
         val userId = sharedPreferences.getString("ID", "")
 
         val noteItems = mutableListOf<NoteItem>()
-        val note_phpUrl = "http://192.168.219.106/noteinfo.php?userId=$userId"
+        val note_phpUrl = "http://192.168.219.108/noteinfo.php?userId=$userId"
 
         val request = Request.Builder().url(note_phpUrl).build()
         val client = OkHttpClient()
@@ -432,7 +432,7 @@ class RequestboardActivity : AppCompatActivity() {
         // receiver_react를 업데이트하는 함수
         private fun updateReceiverReact(requestNumber: String, receiverId: String, senderId: String) {
             val updateUrl =
-                "http://192.168.219.106/receiver_react.php?requestNumber=$requestNumber&receiverId=$receiverId&senderId=$senderId"
+                "http://192.168.219.108/receiver_react.php?requestNumber=$requestNumber&receiverId=$receiverId&senderId=$senderId"
 
             val request = Request.Builder().url(updateUrl).build()
             val client = OkHttpClient()

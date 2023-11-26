@@ -1,13 +1,16 @@
 package com.example.bidone
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -70,7 +73,7 @@ class HomeFragment : Fragment() {
     //인기 게시글 리사이클러뷰 정의
     fun fetchBoardData(adapter: BoardAdapter) {
 
-        val phpUrl = "http://192.168.219.106/popular_board.php"
+        val phpUrl = "http://192.168.219.108/popular_board.php"
         val boardItems = mutableListOf<BoardItem>()
 
         // MySQL 데이터 가져오기
@@ -103,11 +106,12 @@ class HomeFragment : Fragment() {
                         val time = jsonObject.getString("time")
                         val finish = jsonObject.getString("finish_date")
                         val userID = jsonObject.getString("userID")
+                        val thumbnail = jsonObject.getString("thumbnail")
 
                         boardItems.add(
                             BoardItem(
                                 title, simple_explanation, upload_date, userName, worknumber,
-                                detail_explanation, start, increase, date, time, finish, userID
+                                detail_explanation, start, increase, date, time, finish, userID, thumbnail
                             )
                         )
 
@@ -140,7 +144,8 @@ class HomeFragment : Fragment() {
         val date: String,
         val time: String,
         val finish: String,
-        val userID: String
+        val userID: String,
+        val thumbnail: String
         )
 
     class BoardAdapter(private val items: List<BoardItem>) : RecyclerView.Adapter<BoardAdapter.ViewHolder>() {
@@ -153,6 +158,7 @@ class HomeFragment : Fragment() {
             val uploadDataTextView: TextView = itemView.findViewById(R.id.time)
             val userNameTextView: TextView = itemView.findViewById(R.id.userName)
             val worknumberTextView: TextView = itemView.findViewById(R.id.worknumber)
+            val thumbnailImageView: ImageView = itemView.findViewById(R.id.thumbnail)
 
             //게시글을 누르면 mainboardAcitivity로 이동
             init {
@@ -191,6 +197,12 @@ class HomeFragment : Fragment() {
             holder.uploadDataTextView.text = items[position].uploadData
             holder.userNameTextView.text = items[position].userName
             holder.worknumberTextView.text = items[position].worknumber
+
+            //썸네일
+            val imageBase64 = items[position].thumbnail
+            val decodedByte = Base64.decode(imageBase64, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+            holder.thumbnailImageView.setImageBitmap(bitmap)
         }
 
         override fun getItemCount(): Int {

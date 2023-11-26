@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.*
-import okhttp3.Request.*
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import java.io.BufferedReader
@@ -24,22 +24,48 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.android.volley.Response
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import org.json.JSONException
 import org.json.JSONObject
 import java.sql.DriverManager
 import java.sql.SQLException
+import android.util.Base64
+import android.view.MotionEvent
+
 
 class mainboardActivity : AppCompatActivity() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var imageAdapter: ImageAdapter
+    private var workNumber: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mainboard)
+
+        //작품번호 넘겨주기
+        workNumber = intent.getStringExtra("worknumber")
+
+        //상세 이미지 리사이클러뷰
+        recyclerView = findViewById<RecyclerView>(R.id.dt_imagerecyclerView) // 클래스 멤버로 선언한 변수 사용
+        imageAdapter = ImageAdapter() // 빈 어댑터 생성
+        recyclerView.adapter = imageAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        fetchImageData()
 
         //작품번호 넘겨받기
         val workNumberTextView = findViewById<TextView>(R.id.work_number)
@@ -131,7 +157,7 @@ class mainboardActivity : AppCompatActivity() {
 
             //DB에 데이터 전송하기
             val bookmark_request = object : StringRequest(
-                Method.POST, "http://192.168.219.106/bookmark.php",
+                Method.POST, "http://192.168.219.108/bookmark.php",
                 Response.Listener { response ->
                     //서버에서 전송하는 응답 내용 확인
                     Log.d("Response", response)
@@ -225,7 +251,7 @@ class mainboardActivity : AppCompatActivity() {
             val current = view.findViewById<TextView>(R.id.current)
 
 
-            val url = "http://192.168.219.106/main_auction.php"
+            val url = "http://192.168.219.108/main_auction.php"
             val postData = "workNumber=$workNumber"
 
             Thread {
@@ -273,7 +299,7 @@ class mainboardActivity : AppCompatActivity() {
 
                         //DB에 데이터 전송하기
                         val request = object : StringRequest(
-                            Method.POST, "http://192.168.219.106/auction.php",
+                            Method.POST, "http://192.168.219.108/auction.php",
                             Response.Listener { response ->
                                 //서버에서 전송하는 응답 내용 확인
                                 Log.d("Response", response)
@@ -335,7 +361,173 @@ class mainboardActivity : AppCompatActivity() {
         }
     }
 
-    fun getUserInfo(context: Context): Pair<String?, String?> {
+    //상세 이미지 여러 장 가져오기
+    // 네트워크 요청 및 데이터 처리
+    fun fetchImageData() {
+        val url = "http://192.168.219.108/detail_image.php?worknumber=$workNumber"
+
+        val imageItems = mutableListOf<ImageItem>()
+        // OkHttpClient 등을 사용하여 HTTP 요청 실행
+        val request = Request.Builder().url(url).build()
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                // 요청 실패 시 처리할 내용
+            }
+
+            override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                val jsonData = response.body?.string()
+                Log.d("JSON Response", "Response data: $jsonData")
+
+                // JSON 데이터 파싱
+                // jsonData가 null이 아닌 경우에만 JSONArray 생성
+                if (jsonData != null) {
+                    try {
+
+                        val jsonArray = JSONArray(jsonData)
+                        for (i in 0 until jsonArray.length()) {
+                            val jsonObject = jsonArray.getJSONObject(i)
+                            // 키의 존재 여부와 값의 null 여부를 체크
+                            val base64Images = jsonObject.getString("detail_image").split(",")
+
+                            // 로그를 통한 검증
+                            base64Images.forEachIndexed { index, base64 ->
+                                Log.d("Base64 Image Data", "Image $index: $base64")
+                            }
+
+
+                            imageItems.add(ImageItem(base64Images))
+                        }
+
+                        this@mainboardActivity.runOnUiThread { // activity?. 대신에 this@MainActivity를 사용
+                            imageAdapter.clear()
+                            // 리사이클러뷰에 데이터 추가하기
+                            imageAdapter.addItems(imageItems)
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        // JSON 파싱 오류 처리
+                        Log.e("Error:", "Error parsing JSON data", e)
+                        Log.e("JSON Parsing Error", "Error parsing JSON data: $jsonData", e)
+                    }
+                }
+
+            }
+        })
+
+    }
+
+
+    data class ImageItem(val imagesBase64: List<String>, var currentIndex: Int = 0)
+
+
+    class ImageAdapter() : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+
+        // 데이터를 저장할 리스트 선언
+        private val items = mutableListOf<ImageItem>()
+
+        //리사이클러뷰 비우기
+        fun clear() {
+            val size = items.size
+            items.clear()
+            notifyItemRangeRemoved(0, size)
+        }
+
+        // 데이터를 추가하는 메소드 정의
+        fun addItems(newItems: List<ImageItem>) {
+            items.addAll(newItems)
+            notifyDataSetChanged() // 데이터가 변경되었음을 알림
+        }
+
+        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+            View.OnClickListener {
+            // item_board.xml에서 정의한 뷰들과 매칭되는 변수들 선언
+            val imageView: ImageView = itemView.findViewById(R.id.imageView)
+            var imageIndex = 0
+            var bitmaps: List<Bitmap> = emptyList()
+
+
+            // 이미지를 표시하는 함수
+            fun displayImage() {
+                if (imageIndex in bitmaps.indices) {
+                    imageView.setImageBitmap(bitmaps[imageIndex])
+                    Log.d("ImageAdapter", "Displaying image at index: $imageIndex")
+                }
+            }
+
+            init {
+                imageView.setOnTouchListener(object : View.OnTouchListener {
+                    var x1: Float = 0f
+                    var x2: Float = 0f
+                    val MIN_DISTANCE = 50 // 최소 스와이프 거리
+
+                    override fun onTouch(v: View, event: MotionEvent): Boolean {
+                        when (event.action) {
+                            MotionEvent.ACTION_DOWN -> {
+                                x1 = event.x
+                                return true
+                            }
+                            MotionEvent.ACTION_UP -> {
+                                x2 = event.x
+                                val deltaX = x2 - x1
+
+                                if (Math.abs(deltaX) > MIN_DISTANCE) {
+                                    // 오른쪽에서 왼쪽으로 스와이프
+                                    if (x2 < x1 && imageIndex < bitmaps.size - 1) {
+                                        imageIndex++
+                                    }
+                                    // 왼쪽에서 오른쪽으로 스와이프
+                                    else if (x2 > x1 && imageIndex > 0) {
+                                        imageIndex--
+                                    }
+                                    displayImage()
+                                    items[adapterPosition].currentIndex = imageIndex
+                                }
+                                return true
+                            }
+                        }
+                        return false
+                    }
+                })
+            }
+
+            override fun onClick(v: View?) {
+
+            }
+
+
+        }
+
+        //리사이클러뷰 viewholder
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_image, parent, false)
+            return ViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val item = items[position]
+            holder.imageIndex = item.currentIndex
+
+            if (item.imagesBase64.isNotEmpty()) {
+                holder.bitmaps = item.imagesBase64.map { base64String ->
+                    val decodedByte = Base64.decode(base64String, Base64.DEFAULT)
+                    BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+                }
+
+                holder.displayImage()
+            }
+        }
+
+
+        override fun getItemCount(): Int {
+            return items.size
+        }
+    }
+
+
+   fun getUserInfo(context: Context): Pair<String?, String?> {
         val sharedPreferences = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
         val userId = sharedPreferences.getString("ID", null)
         val userName = sharedPreferences.getString("userName", null)
@@ -351,7 +543,7 @@ class mainboardActivity : AppCompatActivity() {
         val (userId, _) = getUserInfo(this)
 
         val checkBookmarkRequest = object : StringRequest(
-            Method.POST, "http://192.168.219.106/checkBookmark.php",
+            Method.POST, "http://192.168.219.108/checkBookmark.php",
             Response.Listener { response ->
                 when (response.trim()) {
                     "exists" -> {
@@ -387,7 +579,7 @@ class mainboardActivity : AppCompatActivity() {
         val workNumber = intent.getStringExtra("worknumber").toString()
 
         val count_request = StringRequest(
-            com.android.volley.Request.Method.GET, "http://192.168.219.106/count_bookmark.php?work_number=$workNumber",
+            com.android.volley.Request.Method.GET, "http://192.168.219.108/count_bookmark.php?work_number=$workNumber",
             Response.Listener { response ->
                 val bkmarkView = findViewById<TextView>(R.id.bkmarkView)
                 bkmarkView.text = response
