@@ -10,8 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -62,6 +61,51 @@ class MyFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_my, container, false)
+
+        //이름 변경
+
+        //현재 이름
+        val name_change = view.findViewById<EditText>(R.id.name_change)
+        val (_, userName) = getUserInfo(requireContext())
+        name_change?.setText(userName ?: "")
+
+        //이름 변경 버튼 클릭 리스너
+        val changeBtn = view.findViewById<Button>(R.id.namechangebutton)
+
+        changeBtn.setOnClickListener(){
+
+            val nameText = name_change.text.toString()
+            val (userId, _) = getUserInfo(requireContext())
+
+            val formBody = FormBody.Builder()
+                .apply {
+                    userId?.let { add("userID", it) }
+                }
+                .add("change_userName", nameText)
+                .build()
+
+            val request = Request.Builder()
+                .url("http://192.168.219.106/name_update.php")
+                .post(formBody)
+                .build()
+
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    // Handle the error
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    // Handle the response
+                    activity?.runOnUiThread {
+                        Toast.makeText(requireContext(), "이름을 변경했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+
+        }
+
+
 
         // 리사이클러뷰 초기화
         val recyclerView = view?.findViewById<RecyclerView>(R.id.myboard_recyclerView)
@@ -319,6 +363,12 @@ class MyFragment : Fragment() {
         return 0
     }
 
+    fun getUserInfo(context: Context): Pair<String?, String?> {
+        val sharedPreferences = context.getSharedPreferences("USER_INFO", Context.MODE_PRIVATE)
+        val userId = sharedPreferences.getString("ID", null)
+        val userName = sharedPreferences.getString("userName", null)
+        return Pair(userId, userName)
+    }
 
     companion object {
         /**
